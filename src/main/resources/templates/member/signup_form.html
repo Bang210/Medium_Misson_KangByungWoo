@@ -1,0 +1,28 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content">
+
+    <h1 class="text-center font-bold">회원가입</h1>
+
+    <form method="post" onsubmit="">
+
+        <div class="form-control mt-5 ml-2">
+            <input type="text" name="username" placeholder="ID">
+        </div>
+
+        <div class="form-control mt-5 ml-2">
+            <input type="text" name="password" placeholder="비밀번호">
+        </div>
+
+        <div class="form-control mt-5 ml-2">
+            <input type="text" name="password-confirm" placeholder="비밀번호 확인">
+        </div>
+
+        <button type="submit" class="btn btn-outline btn-block mt-5">
+            회원가입
+        </button>
+
+    </form>
+
+</div>
+</html>

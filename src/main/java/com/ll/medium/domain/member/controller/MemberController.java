@@ -16,6 +16,6 @@ public class MemberController {
 
     @GetMapping("/signup")
     public String join() {
-        return "signup_form";
+        return "member/signup_form";
     }
 }
