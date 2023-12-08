@@ -42,7 +42,7 @@ public class SecurityConfig {
                 )
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/?msg=" + URLEncoder.encode("로그아웃 되었습니다.", StandardCharsets.UTF_8))
                         .invalidateHttpSession(true))
         ;
 
