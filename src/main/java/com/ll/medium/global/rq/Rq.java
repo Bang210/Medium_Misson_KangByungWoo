@@ -20,4 +20,11 @@ public class Rq {
     public String redirect(String path, String msg) {
         return "redirect:" + path + "?msg=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
+
+
+    public String historyBack(String msg) {
+
+        request.setAttribute("failMsg", msg);
+        return "global/fail_msg";
+    }
 }

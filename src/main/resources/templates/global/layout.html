@@ -23,15 +23,29 @@
 <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
 <script src="https://cdn.tailwindcss.com"></script>
 
+<th:block layout:fragment="content"></th:block>
+
 <script>
+
+    $(window).bind("pageshow", function (event) {
+        if (sessionStorage.getItem("historyBackFailMsg")) {
+            toastWarning(sessionStorage.getItem("historyBackFailMsg"));
+            sessionStorage.removeItem("historyBackFailMsg");
+        }
+    });
+
     const queryParams = getQueryParams();
 
     if (queryParams.msg) {
         toastNotice(queryParams.msg);
     }
 
+    if (queryParams.failMsg) {
+        toastWarning(queryParams.failMsg);
+    }
+
 </script>
 
-<th:block layout:fragment="content"></th:block>
+
 </body>
 </html>

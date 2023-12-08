@@ -1,0 +1,51 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <h1 class="text-center font-bold">로그인</h1>
+
+    <form method="post" class="flex flex-col gap-4" th:action onsubmit="submitLoginForm(this); return false">
+
+        <div class="form-control">
+            <input type="text" name="username" placeholder="아이디" class="input input-bordered mt-5">
+        </div>
+
+        <div class="form-control">
+            <input type="password" name="password" placeholder="비밀번호" class="input input-bordered">
+        </div>
+
+
+        <button type="submit" class="btn btn-outline btn-block mt-5">
+            로그인
+        </button>
+
+    </form>
+
+    <script>
+        function submitLoginForm(form) {
+
+            const inputUsername = form.username;
+            const inputPassword = form.password;
+
+            const username = inputUsername.value;
+            const password = inputPassword.value;
+
+            if (username.length == 0) {
+                toastWarning("ID를 입력해주세요")
+                inputUsername.focus();
+                return;
+            }
+
+            if (password.length == 0) {
+                toastWarning("비밀번호를 입력해주세요")
+                inputPassword.focus();
+                return;
+            }
+
+
+            form.submit();
+        }
+    </script>
+
+</div>
+</html>

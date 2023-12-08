@@ -4,10 +4,10 @@
 
     <h1 class="text-center font-bold">회원가입</h1>
 
-    <form method="post" class="flex flex-col gap-4" th:action="@{/member/signup}" onsubmit="submitSignupForm(this); return false">
+    <form method="post" class="flex flex-col gap-4" th:action onsubmit="submitSignupForm(this); return false">
 
         <div class="form-control">
-            <input type="text" name="username" placeholder="ID" class="input input-bordered mt-5">
+            <input type="text" name="username" placeholder="아이디" class="input input-bordered mt-5">
         </div>
 
         <div class="form-control">
