@@ -5,13 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Medium_Mission</title>
 
+    <!-- 제이쿼리 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- toastr 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link href="https://jhs512.github.io/toastr/toastr.css" rel="stylesheet">
+
 
     <link rel="stylesheet" href="/global.css">
+    <script src="/global.js"></script>
 
 </head>
+
 <body>
+
 <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+    const queryParams = getQueryParams();
+
+    if (queryParams.msg) {
+        toastNotice(queryParams.msg);
+    }
+
+</script>
+
 <th:block layout:fragment="content"></th:block>
 </body>
 </html>

@@ -36,19 +36,19 @@
             const password_confirm = inputPassword_confirm.value;
 
             if (username.length < 5) {
-                alert("ID를 5글자 이상 입력해주세요.")
+                toastWarning("ID를 5글자 이상 입력해주세요.")
                 inputUsername.focus();
                 return;
             }
 
             if (password.length < 8) {
-                alert("비밀번호를 8글자 이상 입력해주세요.")
+                toastWarning("비밀번호를 8글자 이상 입력해주세요.")
                 inputPassword.focus();
                 return;
             }
 
             if (password_confirm != password) {
-                alert("비밀번호가 일치하지 않습니다.")
+                toastWarning("비밀번호가 일치하지 않습니다.")
                 inputPassword_confirm.focus();
                 return;
             }
