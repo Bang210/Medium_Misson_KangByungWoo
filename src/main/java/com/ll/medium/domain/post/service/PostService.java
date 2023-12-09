@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,7 +48,9 @@ public class PostService {
     }
 
     public Page<Post> findPublished(int page) {
-        Pageable pageable = PageRequest.of(page, 11);
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 11, Sort.by(sorts));
         return postRepository.findAll(pageable).stream()
                 .filter(post -> post.getIsPublished().equals("true"))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), list -> new PageImpl<>(list, pageable, list.size())));
