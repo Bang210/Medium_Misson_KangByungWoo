@@ -37,16 +37,19 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String write(@Valid WriteForm writeForm, Principal principal) {
+        if (writeForm.getIsPublished() == null) {
+            writeForm.setIsPublished("false");
+        }
 
         Member member = memberService.getMember(principal.getName());
-        postService.create(writeForm.getTitle(), writeForm.getBody(), member);
-        return rq.redirect("/", "등록되었습니다.");
+        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished(), member);
+        return rq.redirect("/", "글이 %s로 등록되었습니다.".formatted(writeForm.getIsPublished().equals("true")? "공개" : "비공개"));
     }
 
     @GetMapping("/list")
     public String showList(Model model) {
-        List<Post> postList = postService.findAll();
-        model.addAttribute("postList", postList);
+        List<Post> publishedPostList = postService.findPublished();
+        model.addAttribute("postList", publishedPostList);
         return "/post/post_list";
     }
 

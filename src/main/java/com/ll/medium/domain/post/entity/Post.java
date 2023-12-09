@@ -24,10 +24,15 @@ public class Post {
     @Column(columnDefinition = "Text")
     private String body;
 
+    @Column
+    private String isPublished;
+
     private LocalDateTime createDate;
 
     private LocalDateTime modifyDate;
 
     @ManyToOne
     private Member author;
+
+
 }

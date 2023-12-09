@@ -14,4 +14,6 @@ public class WriteForm {
 
     @NotBlank
     private String body;
+    
+    private String isPublished;
 }

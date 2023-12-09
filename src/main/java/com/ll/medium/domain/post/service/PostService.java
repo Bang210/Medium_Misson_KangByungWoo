@@ -16,11 +16,12 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-    public void create(String title, String body, Member member) {
+    public void create(String title, String body, String isPublished, Member member) {
         Post post = new Post();
         post.setTitle(title);
         post.setBody(body);
         post.setAuthor(member);
+        post.setIsPublished(isPublished);
         post.setCreateDate(LocalDateTime.now());
         postRepository.save(post);
     }
@@ -37,5 +38,13 @@ public class PostService {
         } else {
             throw new DataNotFoundException("post not found");
         }
+    }
+
+    public List<Post> findPublished() {
+        List<Post> postList = postRepository.findAll();
+        List<Post> publishedPostList = postList.stream()
+                .filter(post -> post.getIsPublished().equals("true"))
+                .toList();
+        return publishedPostList;
     }
 }
