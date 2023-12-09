@@ -5,11 +5,16 @@ import com.ll.medium.domain.post.entity.Post;
 import com.ll.medium.domain.post.repository.PostRepository;
 import com.ll.medium.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +45,10 @@ public class PostService {
         }
     }
 
-    public List<Post> findPublished() {
-        List<Post> postList = postRepository.findAll();
-        List<Post> publishedPostList = postList.stream()
+    public Page<Post> findPublished(int page) {
+        Pageable pageable = PageRequest.of(page, 11);
+        return postRepository.findAll(pageable).stream()
                 .filter(post -> post.getIsPublished().equals("true"))
-                .toList();
-        return publishedPostList;
+                .collect(Collectors.collectingAndThen(Collectors.toList(), list -> new PageImpl<>(list, pageable, list.size())));
     }
 }
