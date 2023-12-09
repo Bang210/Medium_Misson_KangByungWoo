@@ -1,0 +1,28 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <!--포스트 테이블 시작-->
+    <div class="overflow-x-auto">
+        <table class="table">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th>작성일시</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${postList}">
+                <td>
+                    <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
+                </td>
+                <td th:text="${post.createDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--포스트 테이블 끝-->
+
+</div>
+</html>

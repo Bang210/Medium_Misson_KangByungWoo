@@ -7,7 +7,7 @@
     <form method="post" class="flex flex-col gap-4" th:action onsubmit="submitWriteForm(this); return false">
 
         <div class="form-control">
-            <input type="text" name="title" placeholder="제목" class="input input-bordered mt-5">
+            <input type="text" name="title" placeholder="제목" oninput="lengthCheck(this);" class="input input-bordered mt-5">
         </div>
 
         <div class="form-control">
@@ -21,6 +21,13 @@
     </form>
 
     <script>
+
+        function lengthCheck(input) {
+            const title = input;
+            if (title.value.length > 100) {
+                title.value = title.value.substring(0, 99);
+            }
+        }
         function submitWriteForm(form) {
 
             const inputTitle = form.title;
