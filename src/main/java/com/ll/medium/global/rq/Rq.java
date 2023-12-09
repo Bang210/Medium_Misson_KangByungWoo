@@ -27,4 +27,8 @@ public class Rq {
         request.setAttribute("failMsg", msg);
         return "global/fail_msg";
     }
+
+    public String redirectByFailure(String path, String msg) {
+        return "redirect:" + path + "?failMsg=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
+    }
 }

@@ -30,7 +30,7 @@ public class MemberController {
 
         try {
             memberService.create(joinForm.getUsername(), joinForm.getPassword());
-        } catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             return rq.historyBack("이미 존재하는 회원 아이디입니다.");
         }
         return rq.redirect("/", "회원가입 성공");

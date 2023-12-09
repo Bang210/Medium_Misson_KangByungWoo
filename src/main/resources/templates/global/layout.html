@@ -43,7 +43,7 @@
         <a href="/" class="btn btn-ghost text-xl">medium</a>
     </div>
     <div class="navbar-end">
-        <i class="fa-regular fa-user"><a sec:authorize="isAuthenticated()" th:text="${#authentication.name}" class="text-xs mr-4"></a></i>
+        <i sec:authorize="isAuthenticated()" class="fa-regular fa-user"><a th:text="${#authentication.name}" class="text-xs mr-4"></a></i>
 
     </div>
 </div>
