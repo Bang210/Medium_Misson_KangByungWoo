@@ -6,17 +6,15 @@ import com.ll.medium.domain.post.repository.PostRepository;
 import com.ll.medium.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,12 +45,17 @@ public class PostService {
         }
     }
 
-    public Page<Post> findPublished(int page) {
+    public Page<Post> pagePublished(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 11, Sort.by(sorts));
-        return postRepository.findAll(pageable).stream()
-                .filter(post -> post.getIsPublished().equals("true"))
-                .collect(Collectors.collectingAndThen(Collectors.toList(), list -> new PageImpl<>(list, pageable, list.size())));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return postRepository.findByIsPublishedTrue(pageable);
+    }
+
+    public Page<Post> pageAll(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return postRepository.findAll(pageable);
     }
 }

@@ -45,7 +45,8 @@ public class PostController {
 
     @GetMapping("/list")
     public String showList(Model model, @RequestParam(value="page", defaultValue = "0") int page) {
-        Page<Post> paging = postService.findPublished(page);
+        Page<Post> paging = postService.pagePublished(page);
+        model.addAttribute("page", page);
         model.addAttribute("paging", paging);
         return "/post/post_list";
     }
@@ -55,6 +56,17 @@ public class PostController {
         Post post = postService.getPostById(id);
         model.addAttribute("post", post);
         return "/post/post_detail";
+    }
+
+    @GetMapping("/createTestData")
+    public String createTestData() {
+        for (int i = 0; i < 100; i++) {
+            String title = "test[%d]".formatted(i);
+            String body = "body";
+            Member member = memberService.getMember("user1");
+            postService.create(title, body, "true", member);
+        }
+        return rq.redirect("/", "테스트데이터 생성");
     }
 
 }
