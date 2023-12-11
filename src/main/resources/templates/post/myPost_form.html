@@ -24,6 +24,9 @@
             </tr>
             </tbody>
         </table>
+        <div class="ml-2">
+            <a role="button" class="btn btn-outline" th:href="@{/post/write}">글 쓰기</a>
+        </div>
         <!--포스트 테이블 끝-->
         <!-- 페이징처리 시작 -->
         <th:block th:replace="global/pagination :: pagination(${paging}, 3)">
