@@ -115,7 +115,7 @@ public class PostController {
         }
         Post post = postService.getPostById(id);
         postService.modify(post, modifyForm.getTitle(), modifyForm.getBody(), modifyForm.getIsPublished());
-        return rq.redirect("/post/detail/{id}", "글이 수정되었습니다(%s).".formatted(modifyForm.getIsPublished().equals("true")? "공개" : "비공개"));
+        return rq.redirect(modifyForm.getIsPublished().equals("true")? "/post/detail/{id}" : "/post/list", "글이 수정되었습니다(%s).".formatted(modifyForm.getIsPublished().equals("true")? "공개" : "비공개"));
     }
 
 

@@ -27,7 +27,7 @@
     - password
 
 - [ ] 2단계
-- [ ] 홈
+- [x] 홈
     - GET / : 홈
 
     - 최신글 30개 노출
@@ -49,7 +49,7 @@
 
     - POST /post/write : 글 작성 처리
 
-- [ ] 글 수정
+- [x] 글 수정
     - GET /post/1/modify : 1번 글 수정 폼
 
     - PUT /post/1/modify : 1번 글 수정 폼 처리
@@ -62,7 +62,7 @@
 
     - GET /b/user1/3 : 회원 user1 의 글 중에서 3번글 상세보기
 
-- [ ] 폼
+- [x] 폼
 - [x] 글 쓰기 폼
     - title
 
@@ -74,7 +74,7 @@
 
     - value="true"
 
-- [ ] 글 수정 폼
+- [x] 글 수정 폼
     - title
 
     - body
@@ -84,3 +84,4 @@
     - 체크박스
 
     - value="true"
+    - isPublished가 true면 해당 포스트 디테일로, false면 포스트 리스트로 이동
