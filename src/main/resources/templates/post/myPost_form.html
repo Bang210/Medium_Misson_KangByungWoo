@@ -1,0 +1,37 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <h1 class="text-center font-bold mt-3">내가 쓴 글</h1>
+    <!--포스트 테이블 시작-->
+    <div class="overflow-x-auto">
+        <table class="table">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th></th>
+                <th>작성일시</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post, loop : ${paging}">
+                <td>
+                    <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
+                </td>
+                <td th:text="${post.isPublished == 'true' ? '공개' : '비공개'}"></td>
+                <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <!--포스트 테이블 끝-->
+        <!-- 페이징처리 시작 -->
+        <th:block th:replace="global/pagination :: pagination(${paging}, 3)">
+
+        </th:block>
+
+    </div>
+
+
+</div>
+</html>

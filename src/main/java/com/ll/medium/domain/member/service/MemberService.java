@@ -33,4 +33,5 @@ public class MemberService {
             throw new DataNotFoundException("member not found");
         }
     }
+
 }

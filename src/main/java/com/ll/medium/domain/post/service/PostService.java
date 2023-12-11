@@ -80,4 +80,11 @@ public class PostService {
     public void delete(Post post) {
         postRepository.delete(post);
     }
+
+    public Page<Post> pageMyPost(int page, Long id) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return postRepository.findByAuthorId(pageable, id);
+    }
 }

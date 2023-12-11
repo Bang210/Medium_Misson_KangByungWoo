@@ -46,7 +46,7 @@ public class PostController {
         postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished(), member);
         return rq.redirect(
 
-                "/",
+                "/post/main",
                 "글이 %s로 등록되었습니다.".formatted(writeForm.getIsPublished().equals("true")? "공개" : "비공개")
         );
     }
@@ -159,5 +159,18 @@ public class PostController {
         }
         return "post/deleteConfirm_form";
     }
-}
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypost")
+    public String myPost(
+
+            Principal principal,
+            Model model,
+            @RequestParam(value="page", defaultValue = "0") int page
+    ) {
+        Page<Post> paging = postService.pageMyPost(page, memberService.getMember(principal.getName()).getId());
+        model.addAttribute("page", page);
+        model.addAttribute("paging", paging);
+        return "post/myPost_form";
+    }
+}
