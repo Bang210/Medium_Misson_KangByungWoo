@@ -42,7 +42,7 @@
     - 비공개 글도 노출(표시?)
 
 - [x] 글 상세내용 조회
-    - GET /post/1 : 1번 글 상세보기
+    - GET /post/detail/1 : 1번 글 상세보기
 
 - [x] 글 작성
     - GET /post/write : 글 작성 폼
@@ -50,12 +50,12 @@
     - POST /post/write : 글 작성 처리
 
 - [x] 글 수정
-    - GET /post/1/modify : 1번 글 수정 폼
+    - GET /post/modify/1 : 1번 글 수정 폼
 
-    - PUT /post/1/modify : 1번 글 수정 폼 처리
+    - PUT /post/modify/1 : 1번 글 수정 폼 처리
 
-- [ ] 글 삭제
-    - DELETE /post/1/delete : 1번 글 삭제
+- [x] 글 삭제
+    - DELETE /post/delete/1 : 1번 글 삭제
 
 - [ ] 특정 회원의 글 모아보기
     - GET /b/user1 : 회원 user1 의 전체 글 리스트

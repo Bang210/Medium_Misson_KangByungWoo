@@ -75,4 +75,9 @@ public class PostService {
         post.setIsPublished(isPublished);
         post.setModifyDate(LocalDateTime.now());
     }
+
+    @Transactional
+    public void delete(Post post) {
+        postRepository.delete(post);
+    }
 }

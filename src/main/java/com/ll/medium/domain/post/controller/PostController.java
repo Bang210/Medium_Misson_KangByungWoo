@@ -27,7 +27,7 @@ public class PostController {
     private final MemberService memberService;
     private final Rq rq;
 
-    //글쓰기 화면
+    //글쓰기 페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String showWrite() {
@@ -44,7 +44,11 @@ public class PostController {
 
         Member member = memberService.getMember(principal.getName());
         postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished(), member);
-        return rq.redirect("/", "글이 %s로 등록되었습니다.".formatted(writeForm.getIsPublished().equals("true")? "공개" : "비공개"));
+        return rq.redirect(
+
+                "/",
+                "글이 %s로 등록되었습니다.".formatted(writeForm.getIsPublished().equals("true")? "공개" : "비공개")
+        );
     }
 
     //글 목록
@@ -81,7 +85,7 @@ public class PostController {
         return rq.redirect("/post/main", "테스트데이터 생성");
     }
 
-    //메인 페이지에 글 일부 표시
+    //메인 페이지, 글 일부 표시
     @GetMapping("/main")
     public String home(Model model) {
         List<Post> recentList = postService.findRecent(5);
@@ -89,6 +93,7 @@ public class PostController {
         return "home/main";
     }
 
+    //글 수정 페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String showModify(
@@ -104,6 +109,7 @@ public class PostController {
         return "post/modify_form";
     }
 
+    //글 수정 처리
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(
@@ -115,8 +121,43 @@ public class PostController {
         }
         Post post = postService.getPostById(id);
         postService.modify(post, modifyForm.getTitle(), modifyForm.getBody(), modifyForm.getIsPublished());
-        return rq.redirect(modifyForm.getIsPublished().equals("true")? "/post/detail/{id}" : "/post/list", "글이 수정되었습니다(%s).".formatted(modifyForm.getIsPublished().equals("true")? "공개" : "비공개"));
+        return rq.redirect(
+
+                modifyForm.getIsPublished().equals("true")?
+                        "/post/detail/{id}" : "/post/list", "글이 수정되었습니다(%s)."
+                        .formatted(modifyForm.getIsPublished().equals("true")? "공개" : "비공개")
+        );
     }
 
+    //글 삭제
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String delete(
 
+            Principal principal,
+            @PathVariable("id") Long id
+    ) {
+        Post post = postService.getPostById(id);
+        if (!post.getAuthor().getUsername().equals(principal.getName())) {
+            return rq.redirectByFailure("/post/detail/{id}", "삭제 권한이 없습니다.");
+        }
+        postService.delete(post);
+        return rq.redirect("/post/list", "글이 삭제되었습니다.");
+    }
+
+    //글 삭제 확인
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/confirmDelete/{id}")
+    public String confirmDelete(
+
+            Principal principal,
+            @PathVariable("id") Long id
+    ) {
+        Post post = postService.getPostById(id);
+        if (!post.getAuthor().getUsername().equals(principal.getName())) {
+            return rq.redirectByFailure("/post/detail/{id}", "삭제 권한이 없습니다.");
+        }
+        return "post/deleteConfirm_form";
+    }
 }
+

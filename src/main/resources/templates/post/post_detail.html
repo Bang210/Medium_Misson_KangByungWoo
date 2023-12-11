@@ -17,10 +17,12 @@
         <button class="btn btn-neutral text-xs h-6 mt-3" onclick="history.back()">뒤로가기</button>
         <div>
         <a role="button" class="btn btn-outline mt-3 mr-5" th:href="@{|/post/modify/${post.id}|}">수정</a>
-        <a role="button" class="btn btn-outline mt-3" th:href="@{|/post/modify/${post.id}|}">삭제(미구현)</a>
+        <a role="button" class="btn btn-outline mt-3" th:href="@{|/post/confirmDelete/${post.id}|}">삭제</a>
         </div>
     </div>
 
 
 </div>
+
+
 </html>

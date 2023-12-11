@@ -1,0 +1,17 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+    <div class="w-full border flex flex-col items-center justify-center mt-10">
+        <div class="mt-10 text-center">
+        삭제하시겠습니까?
+        </div>
+        <div class="mt-5 mb-10">
+            <a role="button" class="btn btn-neutral mr-2" th:href="@{|/post/delete/${id}|}">삭제</a>
+            <a role="button" class="btn btn-outline ml-2" th:href="@{|/post/detail/${id}|}">취소</a>
+        </div>
+    </div>
+
+</div>
+
+
+</html>
