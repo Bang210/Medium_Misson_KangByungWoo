@@ -2,16 +2,16 @@
 
 <div layout:fragment="content" class="p-2">
 
-    <h1 class="text-center font-bold">글 작성</h1>
+    <h1 class="text-center font-bold">글 수정</h1>
 
     <form method="post" class="flex flex-col gap-4" th:action onsubmit="submitWriteForm(this); return false">
 
         <div class="form-control">
-            <input type="text" name="title" placeholder="제목" oninput="lengthCheck(this);" class="input input-bordered mt-5">
+            <input type="text" name="title" placeholder="제목" th:value="${post.title}" oninput="lengthCheck(this);" class="input input-bordered mt-5">
         </div>
 
         <div class="form-control">
-            <textarea name="body" class="textarea textarea-bordered" placeholder="내용" rows="10"></textarea>
+            <textarea name="body" class="textarea textarea-bordered" th:text="${post.body}" placeholder="내용" rows="10"></textarea>
         </div>
 
         <div class="form-control">
@@ -63,7 +63,6 @@
                 inputBody.focus();
                 return;
             }
-
 
             form.submit();
         }

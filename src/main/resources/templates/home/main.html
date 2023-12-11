@@ -1,0 +1,24 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+    <span>
+        <h1 class="font-bold mt-5">최신 글</h1>
+        <table class="table">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${recentList}">
+                <td>
+                    <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a role="button" class="btn btn-outline" th:href="@{/post/list}">전체 글 보기</a>
+    </span>
+</div>
+</html>

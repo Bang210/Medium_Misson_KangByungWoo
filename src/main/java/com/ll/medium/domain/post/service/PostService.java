@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,9 +19,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
+    @Transactional
     public void create(String title, String body, String isPublished, Member member) {
         Post post = new Post();
         post.setTitle(title);
@@ -34,6 +37,12 @@ public class PostService {
     public List<Post> findAll() {
         List<Post> postList = postRepository.findAll();
         return postList;
+    }
+
+    public List<Post> findRecent(int num) {
+        List<Post> recentList = postRepository.findByIsPublishedTrueOrderByCreateDateDesc();
+        num = Math.min(num, recentList.size());
+        return recentList.stream().limit(num).toList();
     }
 
     public Post getPostById(Long id) {
@@ -57,5 +66,13 @@ public class PostService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return postRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void modify(Post post, String title, String body, String isPublished) {
+        post.setTitle(title);
+        post.setBody(body);
+        post.setIsPublished(isPublished);
+        post.setModifyDate(LocalDateTime.now());
     }
 }
