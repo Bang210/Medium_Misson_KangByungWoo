@@ -88,17 +88,6 @@ public class PostController {
         return "redirect:/post/detail/{id}";
     }
 
-    //테스트데이타 생성
-    @GetMapping("/createTestData")
-    public String createTestData() {
-        for (int i = 1; i < 101; i++) {
-            String title = "test[%d]".formatted(i);
-            String body = "body";
-            Member member = memberService.getMember("user1");
-            postService.create(title, body, "true", member);
-        }
-        return rq.redirect("/post/main", "테스트데이터 생성");
-    }
 
     //메인 페이지, 글 일부 표시
     @GetMapping("/main")
@@ -202,5 +191,17 @@ public class PostController {
         model.addAttribute("page", page);
         model.addAttribute("pageMemberPost", pageMemberPost);
         return "post/memberpost_list";
+    }
+
+    //테스트데이타 생성
+    @GetMapping("/createTestData")
+    public String createTestData() {
+        for (int i = 1; i < 101; i++) {
+            String title = "test[%d]".formatted(i);
+            String body = "body";
+            Member member = memberService.getMember("user1");
+            postService.create(title, body, "true", member);
+        }
+        return rq.redirect("/post/main", "테스트데이터 생성");
     }
 }

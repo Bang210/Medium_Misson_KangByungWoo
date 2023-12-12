@@ -101,3 +101,8 @@
 
     - value="true"
     - isPublished가 true면 해당 포스트 디테일로, false면 포스트 리스트로 이동
+
+- 조회수 기능 추가
+  - post detail에 최초로 접근할 때에만 증가하도록 구현(새로고침 해도 오르지 않음)
+  - myPost에서 접근할 때는 증가하지 않도록 구현
+  - post detail 화면에 조회수 표시
