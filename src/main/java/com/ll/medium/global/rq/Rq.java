@@ -3,11 +3,16 @@ package com.ll.medium.global.rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @RequestScope
 @Component
@@ -31,4 +36,18 @@ public class Rq {
     public String redirectByFailure(String path, String msg) {
         return "redirect:" + path + "?failMsg=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
+
+    public User getUser() {
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(Authentication::getPrincipal)
+                .filter(it -> it instanceof User)
+                .map(it -> (User) it)
+                .orElse(null);
+    }
+
+
+    public boolean isLoggedIn() {
+        return getUser() != null;
+        }
 }

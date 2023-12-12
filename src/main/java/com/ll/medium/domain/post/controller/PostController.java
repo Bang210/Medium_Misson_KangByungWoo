@@ -53,7 +53,11 @@ public class PostController {
 
     //글 목록
     @GetMapping("/list")
-    public String showList(Model model, @RequestParam(value="page", defaultValue = "0") int page) {
+    public String showList(
+
+            Model model,
+            @RequestParam(value="page", defaultValue = "0") int page
+    ) {
         Page<Post> paging = postService.pagePublished(page);
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
@@ -168,9 +172,24 @@ public class PostController {
             Model model,
             @RequestParam(value="page", defaultValue = "0") int page
     ) {
-        Page<Post> paging = postService.pageMyPost(page, memberService.getMember(principal.getName()).getId());
+        Page<Post> paging = postService.getPageMyPost(page, memberService.getMember(principal.getName()).getId());
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
         return "post/myPost_form";
+    }
+
+    @GetMapping("/{username}/list")
+    public String memberPostList(
+
+            @PathVariable("username") String username,
+            Model model,
+            @RequestParam(value="page", defaultValue = "0") int page
+    ) {
+        Member member = memberService.getMember(username);
+        Page<Post> pageMemberPost = postService.getPageMemberPost(page, member.getId());
+        model.addAttribute("member", member);
+        model.addAttribute("page", page);
+        model.addAttribute("pageMemberPost", pageMemberPost);
+        return "post/memberpost_list";
     }
 }

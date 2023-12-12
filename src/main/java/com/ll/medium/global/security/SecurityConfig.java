@@ -32,12 +32,12 @@ public class SecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/?msg=" + URLEncoder.encode("환영합니다.", StandardCharsets.UTF_8))
+                        .defaultSuccessUrl("/post/main?msg=" + URLEncoder.encode("환영합니다.", StandardCharsets.UTF_8))
                         .failureUrl("/member/login?failMsg=" + URLEncoder.encode("아이디와 비밀번호를 확인해주세요.", StandardCharsets.UTF_8))
                 )
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                        .logoutSuccessUrl("/?msg=" + URLEncoder.encode("로그아웃 되었습니다.", StandardCharsets.UTF_8))
+                        .logoutSuccessUrl("/post/main?msg=" + URLEncoder.encode("로그아웃 되었습니다.", StandardCharsets.UTF_8))
                         .invalidateHttpSession(true))
         ;
 

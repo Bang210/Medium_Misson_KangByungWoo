@@ -2,40 +2,39 @@
 
 <div layout:fragment="content" class="p-2">
 
-    <h1 class="text-center font-bold mt-3">내가 쓴 글</h1>
+    <h1 class="font-bold p-4" th:text="|${member.username}님의 글|"></h1>
     <!--포스트 테이블 시작-->
     <div class="overflow-x-auto">
-        <table th:if="${#lists.isEmpty(paging.content) == false}" class="table">
+        <table th:if="${#lists.isEmpty(pageMemberPost.content) == false}" class="table">
             <!-- head -->
             <thead>
             <tr>
                 <th>제목</th>
-                <th></th>
                 <th>작성일시</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="post, loop : ${paging}">
+            <tr th:each="post, loop : ${pageMemberPost}">
                 <td>
                     <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
                 </td>
-                <td th:text="${post.isPublished == 'true' ? '공개' : '비공개'}"></td>
                 <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
             </tr>
             </tbody>
         </table>
-        <h1 class="p-5 mb-40" th:if="${#lists.isEmpty(paging.content)}">아직 작성한 글이 없습니다.</h1>
-        <div class="ml-2">
-            <a role="button" class="btn btn-outline" th:href="@{/post/write}">글 쓰기</a>
+        <h1 class="p-5 mb-40" th:if="${#lists.isEmpty(pageMemberPost.content)}">아직 작성한 글이 없습니다.</h1>
+        <div class="flex justify-between pl-2 pr-2">
+            <a role="button" class="btn btn-neutral" onclick="history.back()">뒤로가기</a>
+
         </div>
         <!--포스트 테이블 끝-->
         <!-- 페이징처리 시작 -->
-        <th:block th:replace="global/pagination :: pagination(${paging}, 3)">
+        <th:block th:replace="global/pagination :: pagination(${pageMemberPost}, 3)">
 
         </th:block>
 
-    </div>
 
+    </div>
 
 </div>
 </html>
