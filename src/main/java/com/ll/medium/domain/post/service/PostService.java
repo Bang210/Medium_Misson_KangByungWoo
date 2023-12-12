@@ -31,6 +31,7 @@ public class PostService {
         post.setAuthor(member);
         post.setIsPublished(isPublished);
         post.setCreateDate(LocalDateTime.now());
+        post.setHit(0L);
         postRepository.save(post);
     }
 
@@ -93,5 +94,11 @@ public class PostService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return postRepository.findByIsPublishedTrueAndAuthorIdOrderByCreateDateDesc(pageable, id);
+    }
+
+    @Transactional
+    public void increaseHit(Post post) {
+        post.setHit(post.getHit() + 1L);
+        postRepository.save(post);
     }
 }

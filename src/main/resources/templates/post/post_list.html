@@ -16,7 +16,7 @@
             <tbody>
             <tr th:each="post, loop : ${paging}">
                 <td>
-                    <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
+                    <a th:href="@{|/post/detail/${post.id}/increaseHit|}" th:text="${post.title}"></a>
                 </td>
                 <td>
                     <a th:text="${post.author.username}"></a>

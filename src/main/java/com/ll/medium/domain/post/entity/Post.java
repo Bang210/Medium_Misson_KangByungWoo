@@ -34,5 +34,7 @@ public class Post {
     @ManyToOne
     private Member author;
 
+    private Long hit;
+
 
 }

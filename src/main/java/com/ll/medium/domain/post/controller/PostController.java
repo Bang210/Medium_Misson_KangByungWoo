@@ -77,6 +77,17 @@ public class PostController {
         return "/post/post_detail";
     }
 
+    //조회수 증가
+    @GetMapping("/detail/{id}/increaseHit")
+    public String increaseHit(
+
+            @PathVariable("id") Long id
+    ) {
+        Post post = postService.getPostById(id);
+        postService.increaseHit(post);
+        return "redirect:/post/detail/{id}";
+    }
+
     //테스트데이타 생성
     @GetMapping("/createTestData")
     public String createTestData() {
