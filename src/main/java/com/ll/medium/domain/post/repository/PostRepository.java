@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Page<Post> findByIsPublishedTrue(Pageable pageable);
-    List<Post> findByIsPublishedTrueOrderByCreateDateDesc();
-    List<Post> findByIsPublishedTrueOrderByRecommenderDesc();
+    Page<Post> findByPublishedTrue(Pageable pageable);
+    List<Post> findByPublishedTrueOrderByCreateDateDesc();
+    List<Post> findByPublishedTrueOrderByRecommenderDesc();
     Page<Post> findByAuthorId(Pageable pageable, Long UserId);
-    Page<Post> findByIsPublishedTrueAndAuthorIdOrderByCreateDateDesc(Pageable pageable, Long authorId);
+    Page<Post> findByPublishedTrueAndAuthorIdOrderByCreateDateDesc(Pageable pageable, Long authorId);
 }

@@ -25,12 +25,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     @Transactional
-    public void create(String title, String body, String isPublished, Member member) {
+    public void create(String title, String body, boolean published, Member member) {
         Post post = new Post();
         post.setTitle(title);
         post.setBody(body);
         post.setAuthor(member);
-        post.setIsPublished(isPublished);
+        post.setPublished(published);
         post.setCreateDate(LocalDateTime.now());
         post.setHit(0L);
         postRepository.save(post);
@@ -42,7 +42,7 @@ public class PostService {
     }
 
     public List<Post> findRecent(int num) {
-        List<Post> recentList = postRepository.findByIsPublishedTrueOrderByCreateDateDesc();
+        List<Post> recentList = postRepository.findByPublishedTrueOrderByCreateDateDesc();
         num = Math.min(num, recentList.size());
         return recentList.stream().limit(num).toList();
     }
@@ -60,7 +60,7 @@ public class PostService {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        return postRepository.findByIsPublishedTrue(pageable);
+        return postRepository.findByPublishedTrue(pageable);
     }
 
     public Page<Post> pageAll(int page) {
@@ -71,10 +71,10 @@ public class PostService {
     }
 
     @Transactional
-    public void modify(Post post, String title, String body, String isPublished) {
+    public void modify(Post post, String title, String body, boolean published) {
         post.setTitle(title);
         post.setBody(body);
-        post.setIsPublished(isPublished);
+        post.setPublished(published);
         post.setModifyDate(LocalDateTime.now());
     }
 
@@ -94,7 +94,7 @@ public class PostService {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        return postRepository.findByIsPublishedTrueAndAuthorIdOrderByCreateDateDesc(pageable, id);
+        return postRepository.findByPublishedTrueAndAuthorIdOrderByCreateDateDesc(pageable, id);
     }
 
     @Transactional
@@ -125,7 +125,7 @@ public class PostService {
     }
 
     public List<Post> findRecommended(int num) {
-        List<Post> recommendedList = postRepository.findByIsPublishedTrueOrderByRecommenderDesc();
+        List<Post> recommendedList = postRepository.findByPublishedTrueOrderByRecommenderDesc();
         num = Math.min(num, recommendedList.size());
         return recommendedList.stream().limit(num).toList();
     }

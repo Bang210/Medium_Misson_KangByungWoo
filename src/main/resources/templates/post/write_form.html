@@ -17,7 +17,7 @@
         <div class="form-control">
             <label class="label cursor-pointer">
                 <span class="label-text">글 공개</span>
-                <input type="checkbox" name="isPublished" checked="checked" class="checkbox" />
+                <input type="checkbox" name="published" checked="checked" class="checkbox" />
             </label>
         </div>
 
@@ -46,10 +46,10 @@
             const title = inputTitle.value;
             const body = inputBody.value;
 
-            if (form.isPublished.checked) {
-                form.isPublished.value = true;
+            if (form.published.checked) {
+                form.published.value = true;
             } else {
-                form.isPublished.value = "false";
+                form.published.value = false;
             }
 
             if (title.length == 0) {

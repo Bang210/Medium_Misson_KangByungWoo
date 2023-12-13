@@ -28,7 +28,7 @@ public class Post {
     private String body;
 
     @Column
-    private String isPublished;
+    private boolean published;
 
     private LocalDateTime createDate;
 

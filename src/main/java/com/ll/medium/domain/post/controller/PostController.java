@@ -38,16 +38,14 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String write(@Valid WriteForm writeForm, Principal principal) {
-        if (writeForm.getIsPublished() == null) {
-            writeForm.setIsPublished("false");
-        }
+
 
         Member member = memberService.getMember(principal.getName());
-        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished(), member);
+        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member);
         return rq.redirect(
 
                 "/post/main",
-                "글이 %s로 등록되었습니다.".formatted(writeForm.getIsPublished().equals("true")? "공개" : "비공개")
+                "글이 %s로 등록되었습니다.".formatted(writeForm.isPublished()? "공개" : "비공개")
         );
     }
 
@@ -125,16 +123,13 @@ public class PostController {
             @PathVariable("id") Long id,
             @Valid ModifyForm modifyForm
     ) {
-        if (modifyForm.getIsPublished() == null) {
-            modifyForm.setIsPublished("false");
-        }
         Post post = postService.getPostById(id);
-        postService.modify(post, modifyForm.getTitle(), modifyForm.getBody(), modifyForm.getIsPublished());
+        postService.modify(post, modifyForm.getTitle(), modifyForm.getBody(), modifyForm.isPublished());
         return rq.redirect(
 
-                modifyForm.getIsPublished().equals("true")?
-                        "/post/detail/{id}" : "/post/list", "글이 수정되었습니다(%s)."
-                        .formatted(modifyForm.getIsPublished().equals("true")? "공개" : "비공개")
+                modifyForm.isPublished()?
+                        "/post/detail/{id}" : "/post/list",
+                "글이 수정되었습니다(%s).".formatted(modifyForm.isPublished()? "공개" : "비공개")
         );
     }
 
@@ -234,7 +229,7 @@ public class PostController {
             String title = "test[%d]".formatted(i);
             String body = "body";
             Member member = memberService.getMember("user1");
-            postService.create(title, body, "true", member);
+            postService.create(title, body, true, member);
         }
         return rq.redirect("/post/main", "테스트데이터 생성");
     }

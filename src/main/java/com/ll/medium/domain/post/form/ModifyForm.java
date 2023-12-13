@@ -15,5 +15,5 @@ public class ModifyForm {
     @NotBlank
     private String body;
 
-    private String isPublished;
+    private boolean published;
 }
