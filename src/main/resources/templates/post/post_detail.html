@@ -12,9 +12,20 @@
         </div>
         <div class="divider"></div>
         <div th:text="${post.body}" class="ml-2"></div>
-        <div class="mt-10 text-xs" th:text="|작성: ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
-        <div th:if="${post.modifyDate}" class="text-xs"
-             th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
+        <div class="flex justify-between p-1 mt-16">
+        <div>
+            <div class="text-xs" th:text="|작성: ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
+            <div th:if="${post.modifyDate}" class="text-xs"
+                 th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
+        </div>
+            <a role="button" th:if="${recommendButton} == 'notPressed'" th:href="@{|/post/recommend/${post.id}|}" class="btn btn-xs btn-outline">
+                <i class="fa-regular fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
+            </a>
+            <a role="button" th:if="${recommendButton} == 'pressed'" th:href="@{|/post/unrecommend/${post.id}|}" class="btn btn-xs btn-neutral">
+                <i class="fa-solid fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
+            </a>
+
+        </div>
     </div>
     <div class="divider"></div>
     <div class="flex justify-between">

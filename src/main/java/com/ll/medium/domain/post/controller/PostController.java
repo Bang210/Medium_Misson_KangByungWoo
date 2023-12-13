@@ -73,7 +73,10 @@ public class PostController {
 
     ) {
         Post post = postService.getPostById(id);
+        List<String> recommenderNames = postService.getRecommenderNames(post);
+        String recommendButton = rq.isLoggedIn() && recommenderNames.contains(rq.getUser().getUsername())? "pressed" : "notPressed";
         model.addAttribute("post", post);
+        model.addAttribute("recommendButton", recommendButton);
         return "/post/post_detail";
     }
 
@@ -164,6 +167,7 @@ public class PostController {
         return "post/deleteConfirm_form";
     }
 
+    //내 글 보기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypost")
     public String myPost(
@@ -178,6 +182,7 @@ public class PostController {
         return "post/myPost_form";
     }
 
+    //사용자별 글 보기
     @GetMapping("/{username}/list")
     public String memberPostList(
 
@@ -193,7 +198,34 @@ public class PostController {
         return "post/memberpost_list";
     }
 
-    //테스트데이타 생성
+    //추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/recommend/{id}")
+    public String recommendPost(
+
+            Principal principal,
+            @PathVariable("id") Long id
+    ) {
+        Post post = postService.getPostById(id);
+        Member member = memberService.getMember(principal.getName());
+        postService.recommend(post, member);
+        return rq.redirect("/post/detail/{id}","추천되었습니다.");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/unrecommend/{id}")
+    public String unrecommendPost(
+
+            Principal principal,
+            @PathVariable("id") Long id
+    ) {
+        Post post = postService.getPostById(id);
+        Member member = memberService.getMember(principal.getName());
+        postService.unrecommend(post, member);
+        return rq.redirect("/post/detail/{id}","추천이 취소되었습니다.");
+    }
+
+    //테스트데이터 생성
     @GetMapping("/createTestData")
     public String createTestData() {
         for (int i = 1; i < 101; i++) {

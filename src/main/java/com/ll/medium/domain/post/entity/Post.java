@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Entity
@@ -35,6 +36,9 @@ public class Post {
     private Member author;
 
     private Long hit;
+
+    @ManyToMany
+    Set<Member> recommender;
 
 
 }

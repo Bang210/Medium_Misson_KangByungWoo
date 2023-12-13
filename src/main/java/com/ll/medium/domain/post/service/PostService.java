@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -100,5 +101,30 @@ public class PostService {
     public void increaseHit(Post post) {
         post.setHit(post.getHit() + 1L);
         postRepository.save(post);
+    }
+
+    @Transactional
+    public void recommend(Post post, Member member) {
+        post.getRecommender().add(member);
+        postRepository.save(post);
+    }
+
+    @Transactional
+    public void unrecommend(Post post, Member member) {
+        post.getRecommender().remove(member);
+        postRepository.save(post);
+    }
+
+    @Transactional
+    public boolean checkRecommendByUsername(Post post, String username) {
+        return post.getRecommender().contains(username);
+    }
+
+    public List<String> getRecommenderNames(Post post) {
+        Set<Member> recommender = post.getRecommender();
+        List<String> recommenderNames = recommender.stream()
+                .map(Member::getUsername)
+                .toList();
+        return recommenderNames;
     }
 }
