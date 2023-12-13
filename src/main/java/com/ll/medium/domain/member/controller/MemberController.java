@@ -52,7 +52,7 @@ public class MemberController {
         return "member/login_form";
     }
 
-    @GetMapping("/find")
+    @PostMapping("/find")
     public String showFindMember(
 
             @Valid FindMemberForm findMemberForm,

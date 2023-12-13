@@ -1,5 +1,6 @@
 package com.ll.medium.domain.post.entity;
 
+import com.ll.medium.domain.comment.entity.Comment;
 import com.ll.medium.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -40,5 +42,6 @@ public class Post {
     @ManyToMany
     Set<Member> recommender;
 
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
 }

@@ -81,7 +81,7 @@ public class PostController {
     }
 
     //조회수 증가
-    @GetMapping("/detail/{id}/increaseHit")
+    @PostMapping("/detail/{id}/increaseHit")
     public String increaseHit(
 
             @PathVariable("id") Long id
@@ -202,7 +202,7 @@ public class PostController {
 
     //추천
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/recommend/{id}")
+    @PostMapping("/recommend/{id}")
     public String recommendPost(
 
             Principal principal,
@@ -215,7 +215,7 @@ public class PostController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/unrecommend/{id}")
+    @PostMapping("/unrecommend/{id}")
     public String unrecommendPost(
 
             Principal principal,

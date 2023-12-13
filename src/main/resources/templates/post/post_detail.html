@@ -18,16 +18,19 @@
             <div th:if="${post.modifyDate}" class="text-xs"
                  th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
         </div>
-            <a role="button" th:if="${recommendButton} == 'notPressed'" th:href="@{|/post/recommend/${post.id}|}" class="btn btn-xs btn-outline">
+            <form th:if="${recommendButton} == 'notPressed'" th:object="${post}" method="post" th:action="@{/post/recommend/{id}(id=${post.id})}">
+            <button type="submit" class="btn btn-xs btn-outline">
                 <i class="fa-regular fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
-            </a>
-            <a role="button" th:if="${recommendButton} == 'pressed'" th:href="@{|/post/unrecommend/${post.id}|}" class="btn btn-xs btn-neutral">
+            </button>
+            </form>
+            <form th:if="${recommendButton} == 'pressed'" th:object="${post}" method="post" th:action="@{/post/unrecommend/{id}(id=${post.id})}">
+            <button type="submit" class="btn btn-xs btn-neutral">
                 <i class="fa-solid fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
-            </a>
-
+            </button>
+            </form>
         </div>
     </div>
-    <div class="divider"></div>
+
     <div class="flex justify-between">
         <button class="btn btn-neutral text-xs h-6 mt-3" onclick="history.back()">뒤로가기</button>
         <div>
@@ -35,6 +38,8 @@
             <a role="button" class="btn btn-outline mt-3" th:href="@{|/post/confirmDelete/${post.id}|}">삭제</a>
         </div>
     </div>
+    <div class="divider"></div>
+    <!-- 댓글 영역 시작-->
 
 
 </div>
