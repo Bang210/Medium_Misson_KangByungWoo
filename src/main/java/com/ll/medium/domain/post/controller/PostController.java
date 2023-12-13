@@ -96,7 +96,9 @@ public class PostController {
     @GetMapping("/main")
     public String home(Model model) {
         List<Post> recentList = postService.findRecent(5);
+        List<Post> recommendedList = postService.findRecommended(5);
         model.addAttribute("recentList", recentList);
+        model.addAttribute("recommendedList", recommendedList);
         return "home/main";
     }
 

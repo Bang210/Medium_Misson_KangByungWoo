@@ -115,10 +115,6 @@ public class PostService {
         postRepository.save(post);
     }
 
-    @Transactional
-    public boolean checkRecommendByUsername(Post post, String username) {
-        return post.getRecommender().contains(username);
-    }
 
     public List<String> getRecommenderNames(Post post) {
         Set<Member> recommender = post.getRecommender();
@@ -126,5 +122,11 @@ public class PostService {
                 .map(Member::getUsername)
                 .toList();
         return recommenderNames;
+    }
+
+    public List<Post> findRecommended(int num) {
+        List<Post> recommendedList = postRepository.findByIsPublishedTrueOrderByRecommenderDesc();
+        num = Math.min(num, recommendedList.size());
+        return recommendedList.stream().limit(num).toList();
     }
 }
