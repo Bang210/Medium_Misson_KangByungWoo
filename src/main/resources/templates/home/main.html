@@ -14,7 +14,9 @@
             <tbody>
             <tr th:each="post : ${recentList}">
                 <td>
-                    <a th:href="@{|/post/detail/${post.id}/increaseHit|}" th:text="${post.title}"></a>
+                    <form th:object="${post}" method="POST" th:action="@{/post/detail/{id}/increaseHit(id=${post.id})}">
+                    <button class="text-left" type="submit" th:text="${post.title}"></button>
+                    </form>
                 </td>
                 <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">
                 </td>
@@ -33,7 +35,9 @@
             <tbody>
             <tr th:each="post : ${recommendedList}">
                 <td>
-                    <a th:href="@{|/post/detail/${post.id}/increaseHit|}" th:text="${post.title}"></a>
+                    <form th:object="${post}" method="POST" th:action="@{/post/detail/{id}/increaseHit(id=${post.id})}">
+                    <button class="text-left" type="submit" th:text="${post.title}"></button>
+                    </form>
                 </td>
                 <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">
                 </td>
