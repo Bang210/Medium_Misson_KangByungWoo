@@ -226,15 +226,4 @@ public class PostController {
         return rq.redirect("/post/detail/{id}","추천이 취소되었습니다.");
     }
 
-    //테스트데이터 생성
-    @GetMapping("/createTestData")
-    public String createTestData() {
-        for (int i = 1; i < 101; i++) {
-            String title = "test[%d]".formatted(i);
-            String body = "body";
-            Member member = memberService.getMember("user1");
-            postService.create(title, body, true, member);
-        }
-        return rq.redirect("/post/main", "테스트데이터 생성");
-    }
 }
