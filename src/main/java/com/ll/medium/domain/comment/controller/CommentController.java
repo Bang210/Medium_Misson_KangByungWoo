@@ -1,5 +1,6 @@
 package com.ll.medium.domain.comment.controller;
 
+import com.ll.medium.domain.comment.entity.Comment;
 import com.ll.medium.domain.comment.form.CommentForm;
 import com.ll.medium.domain.comment.service.CommentService;
 import com.ll.medium.domain.member.entity.Member;
@@ -29,7 +30,7 @@ public class CommentController {
 
     @PostMapping("/write/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String writeComment(
+    public String write(
 
             @PathVariable("id") Long id,
             Principal principal,
@@ -41,5 +42,24 @@ public class CommentController {
         commentService.create(member, post, content);
 
         return rq.redirect("/post/detail/{id}", "댓글이 등록되었습니다.");
+    }
+
+    @PostMapping("{postId}/delete/{commentId}")
+    @PreAuthorize("isAuthenticated()")
+    public String delete(
+
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId,
+            Principal principal
+    ) {
+        Member member = memberService.getMember(principal.getName());
+        Comment comment = commentService.findById(commentId);
+
+        if (member.getId() != comment.getMember().getId()){
+            rq.redirectByFailure("/post/detail/{postId}", "삭제 권한이 없습니다.");
+        }
+
+        commentService.delete(comment);
+        return rq.redirect("/post/detail/{postId}", "댓글이 삭제되었습니다.");
     }
 }

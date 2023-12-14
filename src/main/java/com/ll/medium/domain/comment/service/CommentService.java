@@ -4,11 +4,13 @@ import com.ll.medium.domain.comment.entity.Comment;
 import com.ll.medium.domain.comment.repository.CommentRepository;
 import com.ll.medium.domain.member.entity.Member;
 import com.ll.medium.domain.post.entity.Post;
+import com.ll.medium.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +27,20 @@ public class CommentService {
         comment.setContent(content);
         comment.setCreateDate(LocalDateTime.now());
         commentRepository.save(comment);
+    }
+
+    public Comment findById(Long id) {
+
+        Optional<Comment> opComment = commentRepository.findById(id);
+        if (opComment.isPresent()) {
+            return opComment.get();
+        } else {
+            throw new DataNotFoundException("comment not found");
+        }
+    }
+
+    @Transactional
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
     }
 }

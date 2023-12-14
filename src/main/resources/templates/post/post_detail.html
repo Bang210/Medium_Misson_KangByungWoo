@@ -54,9 +54,11 @@
             </td>
             <td class="text-[0.6rem] whitespace-nowrap flex flex-col content-between">
                 <text class="ml-1" th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></text>
-                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username} == ${comment.member.username}" class="mt-2">
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username} == ${comment.member.username}" class="mt-2 flex">
                     <button class="btn btn-xs btn-outline">수정</button>
-                    <button class="btn btn-xs btn-outline">삭제</button>
+                    <form method="POST" onclick="alert('삭제하시겠습니까?')" th:action="@{|/comment/${post.id}/delete/${comment.id}}" class="ml-2">
+                        <button class="btn btn-xs btn-outline">삭제</button>
+                    </form>
                 </div>
             </td>
         </tr>
