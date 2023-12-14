@@ -37,7 +37,11 @@ public class PostController {
     //글쓰기 처리
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
-    public String write(@Valid WriteForm writeForm, Principal principal) {
+    public String write(
+
+            @Valid WriteForm writeForm,
+            Principal principal
+    ) {
 
 
         Member member = memberService.getMember(principal.getName());

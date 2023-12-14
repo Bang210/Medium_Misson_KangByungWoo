@@ -40,8 +40,59 @@
     </div>
     <div class="divider"></div>
     <!-- 댓글 영역 시작-->
+    <!-- 댓글 표시 시작 -->
+    <div th:text="|댓글(${#lists.size(post.commentList)})|"></div>
+    <table class="table">
+        <thead>
 
+        </thead>
+        <tbody>
+        <tr th:each="comment, loop : ${post.commentList.reversed()}">
+            <td>
+                <div th:text="${comment.member.username}" class="font-bold"></div>
+                <div th:text="${comment.content}"></div>
+            </td>
+            <td class="text-[0.6rem] whitespace-nowrap flex flex-col content-between">
+                <text class="ml-1" th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></text>
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username} == ${comment.member.username}" class="mt-2">
+                    <button class="btn btn-xs btn-outline">수정</button>
+                    <button class="btn btn-xs btn-outline">삭제</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- 댓글 표시 끝-->
+<!--    댓글 입력란 시작-->
+    <form method="POST" onsubmit="submitCommentForm(this); return false" th:action="@{|/comment/write/${post.id}|}" class="p-2">
+        <text>댓글 쓰기</text><textarea name="content" class="textarea textarea-bordered row-2 w-full max-w-sm mt-2"  placeholder="댓글을 입력하세요."></textarea>
+        <div class="flex justify-end mr-1 mt-2">
+            <button type="submit" class="btn btn-outline btn-sm">등록하기</button>
+        </div>
+    </form>
 
+<!--    댓글 입력란 끝-->
+    <!-- 댓글 영역 끝-->
+    <script>
+        function submitCommentForm(form) {
+
+            const content = form.content.value.trim();
+
+            if (content.length == 0) {
+                toastWarning("댓글을 입력해주세요.");
+                form.content.focus();
+                return;
+
+            } else if (content.length > 300) {
+                toastWarning("최대 300자 까지만 입력 가능합니다.")
+                form.content.focus();
+                return;
+            }
+
+            form.content.value = content;
+            form.submit();
+        }
+    </script>
 </div>
 
 
