@@ -43,4 +43,11 @@ public class CommentService {
     public void delete(Comment comment) {
         commentRepository.delete(comment);
     }
+
+    @Transactional
+    public void modify(Comment comment, String content) {
+        comment.setContent(content);
+        comment.setModifyDate(LocalDateTime.now());
+        commentRepository.save(comment);
+    }
 }

@@ -12,6 +12,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,5 +63,41 @@ public class CommentController {
 
         commentService.delete(comment);
         return rq.redirect("/post/detail/{postId}", "댓글이 삭제되었습니다.");
+    }
+
+    @GetMapping("{postId}/modify/{commentId}")
+    @PreAuthorize("isAuthenticated()")
+    public String showModify(
+
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId,
+            Model model,
+            Principal principal
+    ) {
+        Member member = memberService.getMember(principal.getName());
+        Post post = postService.getPostById(postId);
+        Comment comment = commentService.findById(commentId);
+
+        if (member.getId() != comment.getMember().getId()){
+            rq.redirectByFailure("/post/detail/{postId}", "수정 권한이 없습니다.");
+        }
+
+        model.addAttribute("post", post);
+        model.addAttribute("comment", comment);
+
+        return "/comment/modify_form";
+    }
+
+    @PostMapping("{postId}/modify/{commentId}")
+    @PreAuthorize("isAuthenticated()")
+    public String modify(
+
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId,
+            @Valid CommentForm commentForm
+    ) {
+        Comment comment = commentService.findById(commentId);
+        commentService.modify(comment, commentForm.getContent());
+        return rq.redirect("/post/detail/{postId}", "댓글이 수정되었습니다.");
     }
 }

@@ -1,0 +1,55 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <div class="flex flex-col w-full">
+        <div>
+            <div th:text="${post.title}" class="font-bold mt-3.5 ml-2"></div>
+            <div class="flex justify-between p-2">
+                <div th:text="${post.author.username}" class="text-sm"></div>
+                <div th:text="|조회수 ${post.hit}|" class="text-xs"></div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div th:text="${post.body}" class="ml-2"></div>
+        <div class="flex justify-between p-1 mt-16">
+            <div>
+                <div class="text-xs" th:text="|작성: ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
+                <div th:if="${post.modifyDate}" class="text-xs"
+                     th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-between">
+        <button class="btn btn-neutral text-xs h-6 mt-3" onclick="history.back()">뒤로가기</button>
+    </div>
+    <div class="divider"></div>
+    <form method="POST" onsubmit="submitCommentForm(this); return false" th:action="@{|/comment/${post.id}/modify/${comment.id}|}" class="p-2">
+        <text>댓글 수정</text>
+        <textarea th:text="${comment.content}" name="content" class="textarea textarea-bordered row-2 w-full max-w-sm mt-2"></textarea>
+        <div class="flex justify-end mr-1 mt-2">
+            <button type="submit" class="btn btn-outline btn-sm">수정하기</button>
+        </div>
+    </form>
+    <script>
+        function submitCommentForm(form) {
+            const contentElement = form.querySelector('[name="content"]');
+            const content = contentElement.value.trim();
+
+            if (content.length === 0) {
+                toastWarning("댓글을 입력해주세요.");
+                contentElement.focus();
+                return;
+            } else if (content.length > 300) {
+                toastWarning("최대 300자 까지만 입력 가능합니다.");
+                contentElement.focus();
+                return;
+            }
+
+            contentElement.value = content;
+            form.submit();
+        }
+    </script>
+
+</html>
