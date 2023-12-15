@@ -16,7 +16,9 @@
             <tbody>
             <tr th:each="post, loop : ${pageMemberPost}">
                 <td>
-                    <a th:href="@{|/post/detail/${post.id}/increaseHit|}" th:text="${post.title}"></a>
+                    <form method="POST" th:action="@{|/post/detail/${post.id}/increaseHit|}">
+                    <button type="submit" th:text="${post.title}"></button>
+                    </form>
                 </td>
                 <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
             </tr>
