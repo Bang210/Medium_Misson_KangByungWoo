@@ -18,6 +18,8 @@
                 <td>
                     <form method="POST" th:action="@{|/post/detail/${post.id}/increaseHit|}">
                     <button type="submit" th:text="${post.title}"></button>
+                        <i th:if="${post.recommender.size() > 0}" th:text="| ${post.recommender.size()}|" class="fa-solid fa-heart fa-2xs"></i>
+                        <i th:if="${post.commentList.size() > 0}" th:text="| ${post.commentList.size()}|" class="fa-solid fa-comment fa-2xs"></i>
                     </form>
                 </td>
                 <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
