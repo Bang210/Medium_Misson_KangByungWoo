@@ -16,35 +16,44 @@
             </thead>
             <tbody>
             <tr th:each="post, loop : ${paging}">
-                <td class="text-[0.6rem]" th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
-                <td>
+                <td class="text-[0.6rem]"
+                    th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
+                <td class="flex">
                     <form th:object="${post}" method="POST" th:action="@{/post/detail/{id}/increaseHit(id=${post.id})}">
-                    <button class="text-left" type="submit" th:text="${post.title}"></button>
+                        <button class="text-left" type="submit" th:text="${post.title}"></button>
+                        <i th:if="${post.recommender.size() > 0}" th:text="| ${post.recommender.size()}|" class="fa-solid fa-heart fa-2xs"></i>
+                        <i th:if="${post.commentList.size() > 0}" th:text="| ${post.commentList.size()}|" class="fa-solid fa-comment fa-2xs"></i>
                     </form>
                 </td>
                 <td>
                     <a th:text="${post.author.username}"></a>
                 </td>
-                <td class="text-[0.6rem] whitespace-nowrap" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
+                <td class="text-[0.6rem] whitespace-nowrap"
+                    th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
             </tr>
             </tbody>
         </table>
         <div class="flex justify-between pl-2 pr-2">
             <a role="button" class="btn btn-outline" th:href="@{/post/write}">글 쓰기</a>
             <!-- 검색 폼-->
-            <form method="POST" th:action="@{/member/find}" class="flex" onsubmit="submitSearchForm(this); return false">
+            <form method="POST" th:action="@{/member/find}" class="flex"
+                  onsubmit="submitSearchForm(this); return false">
                 <button class="btn btn-ghost btn-circle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
                 </button>
-                <input type="text" placeholder="글쓴이 찾기" name="keyword" class="input input-bordered w-32 md:w-auto" />
+                <input type="text" placeholder="글쓴이 찾기" name="keyword" class="input input-bordered w-32 md:w-auto"/>
             </form>
             <!-- 검색 폼 끝-->
         </div>
         <!--포스트 테이블 끝-->
         <!-- 페이징처리 시작 -->
-            <th:block th:replace="global/pagination :: pagination(${paging}, 3)">
+        <th:block th:replace="global/pagination :: pagination(${paging}, 3)">
 
-            </th:block>
+        </th:block>
 
 
     </div>
