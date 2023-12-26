@@ -1,0 +1,60 @@
+<html>
+<head>
+</head>
+<body>
+
+<th:block th:fragment="pagination(itemPage, pageArmSize)">
+
+    <div class="pagination justify-center mt-7"
+         th:if="${itemPage.totalPages > 0}"
+         style="display:flex; gap:10px;"
+         th:with="page = ${itemPage.number}"
+    >
+
+        <a role="button" th:href="|?page=0|"
+           th:classappend="${(page == 0) ? 'btn-active' : ''}"
+           th:text="1"
+           class="btn btn-xs"
+        >
+        </a>
+
+        <th:block th:if="${itemPage.totalPages > 1}">
+            <a
+                    role="button"
+                    class="btn btn-xs"
+                    th:href="|?page=${page - pageArmSize - 1}|"
+                    th:if="${page - pageArmSize > 1}"
+            >...</a>
+
+            <th:block th:if="${itemPage.totalPages > 2}">
+                <a
+                    role="button"
+                    class="btn btn-xs"
+                    th:each="num : ${#numbers.sequence(2, itemPage.totalPages - 1)}"
+                    th:if="${num >= page + 1 - pageArmSize and num <= page + 1 + pageArmSize}"
+                    th:href="|?page=${num - 1}|"
+                    th:text="${num}"
+                    th:classappend="${(num == page + 1) ? 'btn-active' : ''}"
+                ></a>
+            </th:block>
+
+            <a
+                role="button"
+                class="btn btn-xs"
+                th:href="|?page=${page + pageArmSize + 1}|"
+                th:if="${page + pageArmSize < itemPage.totalPages - 2}"
+            >...</a>
+
+            <a
+               role="button"
+               class="btn btn-xs"
+               th:href="|?page=${itemPage.totalPages - 1}|"
+               th:classappend="${(page == itemPage.totalPages - 1) ? 'btn-active' : ''}"
+               th:text="${itemPage.totalPages}"
+            ></a>
+        </th:block>
+    </div>
+</th:block>
+
+</body>
+</html>

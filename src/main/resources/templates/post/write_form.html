@@ -1,0 +1,72 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <h1 class="text-center font-bold">글 작성</h1>
+
+    <form method="post" class="flex flex-col gap-4" th:action onsubmit="submitWriteForm(this); return false">
+
+        <div class="form-control">
+            <input type="text" name="title" placeholder="제목" oninput="lengthCheck(this);" class="input input-bordered mt-5">
+        </div>
+
+        <div class="form-control">
+            <textarea name="body" class="textarea textarea-bordered" placeholder="내용" rows="10"></textarea>
+        </div>
+
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">글 공개</span>
+                <input type="checkbox" name="published" checked="checked" class="checkbox" />
+            </label>
+        </div>
+
+
+        <button type="submit" class="btn btn-outline btn-block mt-5">
+            등록
+        </button>
+    </form>
+
+    <script>
+
+        function lengthCheck(input) {
+            const title = input;
+            if (title.value.length > 30) {
+                title.value = title.value.substring(0, 29);
+            }
+        }
+        function submitWriteForm(form) {
+
+            const inputTitle = form.title;
+            const inputBody = form.body;
+
+            inputTitle.value = inputTitle.value.trim();
+            inputBody.value = inputBody.value.trim();
+
+            const title = inputTitle.value;
+            const body = inputBody.value;
+
+            if (form.published.checked) {
+                form.published.value = true;
+            } else {
+                form.published.value = false;
+            }
+
+            if (title.length == 0) {
+                toastWarning("제목을 입력해주세요.")
+                inputTitle.focus();
+                return;
+            }
+
+            if (body.length == 0) {
+                toastWarning("내용을 입력해주세요.")
+                inputBody.focus();
+                return;
+            }
+
+
+            form.submit();
+        }
+    </script>
+</div>
+</html>

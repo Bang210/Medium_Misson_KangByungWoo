@@ -1,0 +1,108 @@
+<html layout:decorate="~{global/layout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <div class="flex flex-col w-full">
+        <div>
+            <div th:text="${post.title}" class="font-bold mt-3.5 ml-2"></div>
+            <div class="flex justify-between p-2">
+                <div th:text="${post.author.username}" class="text-sm"></div>
+                <div th:text="|조회수 ${post.hit}|" class="text-xs"></div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div th:text="${post.body}" class="ml-2"></div>
+        <div class="flex justify-between p-1 mt-16">
+        <div>
+            <div class="text-xs" th:text="|작성: ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
+            <div th:if="${post.modifyDate}" class="text-xs"
+                 th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
+        </div>
+            <form th:if="${recommendButton} == 'notPressed'" th:object="${post}" method="post" th:action="@{/post/recommend/{id}(id=${post.id})}">
+            <button type="submit" class="btn btn-xs btn-outline">
+                <i class="fa-regular fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
+            </button>
+            </form>
+            <form th:if="${recommendButton} == 'pressed'" th:object="${post}" method="post" th:action="@{/post/unrecommend/{id}(id=${post.id})}">
+            <button type="submit" class="btn btn-xs btn-neutral">
+                <i class="fa-solid fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
+            </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex justify-between">
+        <button class="btn btn-neutral text-xs h-6 mt-3" onclick="history.back()">뒤로가기</button>
+        <div>
+            <a role="button" class="btn btn-outline mt-3 mr-5" th:href="@{|/post/modify/${post.id}|}">수정</a>
+            <a role="button" class="btn btn-outline mt-3" th:href="@{|/post/confirmDelete/${post.id}|}">삭제</a>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <!-- 댓글 영역 시작-->
+    <!-- 댓글 표시 시작 -->
+    <div th:text="|댓글(${#lists.size(post.commentList)})|"></div>
+    <table class="table">
+        <thead></thead>
+        <tbody>
+        <tr th:each="comment, loop : ${post.commentList.reversed()}">
+            <td>
+                <div th:text="${comment.member.username}" class="font-bold"></div>
+                <div th:text="${comment.content}"></div>
+            </td>
+            <td class="text-[0.6rem] whitespace-nowrap flex flex-col content-between">
+                <div class="ml-auto">
+                    <text th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}" class="ml-1"></text>
+                </div>
+                <div class="ml-auto">
+                    <text th:text="${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')}" class="ml-1"></text>
+                </div>
+                <div class="ml-auto">
+                    <text th:if="${comment.modifyDate}" class="ml-1">(수정됨)</text>
+                </div>
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username} == ${comment.member.username}" class="mt-2 flex ml-auto"> <!-- 이 부분 변경 -->
+                    <a th:href="@{|/comment/${post.id}/modify/${comment.id}}" role="button" class="btn btn-xs btn-outline">수정</a>
+                    <form method="POST" onclick="alert('삭제하시겠습니까?')" th:action="@{|/comment/${post.id}/delete/${comment.id}}" class="ml-2">
+                        <button class="btn btn-xs btn-outline">삭제</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 댓글 표시 끝-->
+<!--    댓글 입력란 시작-->
+    <form method="POST" onsubmit="submitCommentForm(this); return false" th:action="@{|/comment/write/${post.id}|}" class="p-2">
+        <text>댓글 쓰기</text><textarea name="content" class="textarea textarea-bordered row-2 w-full max-w-sm mt-2"  placeholder="댓글을 입력하세요."></textarea>
+        <div class="flex justify-end mr-1 mt-2">
+            <button type="submit" class="btn btn-outline btn-sm">등록하기</button>
+        </div>
+    </form>
+
+<!--    댓글 입력란 끝-->
+    <!-- 댓글 영역 끝-->
+    <script>
+        function submitCommentForm(form) {
+
+            const content = form.content.value.trim();
+
+            if (content.length == 0) {
+                toastWarning("댓글을 입력해주세요.");
+                form.content.focus();
+                return;
+
+            } else if (content.length > 300) {
+                toastWarning("최대 300자 까지만 입력 가능합니다.")
+                form.content.focus();
+                return;
+            }
+
+            form.content.value = content;
+            form.submit();
+        }
+    </script>
+</div>
+
+
+</html>
