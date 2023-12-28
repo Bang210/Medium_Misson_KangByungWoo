@@ -3,8 +3,8 @@
  - 모바일용 웹화면으로 구성
  - ncp 배포
 ## 체크리스트
- - [ ] 1단계
-   - [ ] member엔티티에 paid 필드 추가
+ - [x] 1단계
+   - [x] member엔티티에 paid 필드 추가
      - role_paid
  - [ ] 2단계
    - [ ] post엔티티에 paid 필드 추가
