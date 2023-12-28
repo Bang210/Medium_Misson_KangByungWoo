@@ -13,20 +13,22 @@
         <div class="divider"></div>
         <div th:text="${post.body}" class="ml-2"></div>
         <div class="flex justify-between p-1 mt-16">
-        <div>
-            <div class="text-xs" th:text="|작성: ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
-            <div th:if="${post.modifyDate}" class="text-xs"
-                 th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
-        </div>
-            <form th:if="${recommendButton} == 'notPressed'" th:object="${post}" method="post" th:action="@{/post/recommend/{id}(id=${post.id})}">
-            <button type="submit" class="btn btn-xs btn-outline">
-                <i class="fa-regular fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
-            </button>
+            <div>
+                <div class="text-xs" th:text="|작성: ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
+                <div th:if="${post.modifyDate}" class="text-xs"
+                     th:text="|수정: ${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}|"></div>
+            </div>
+            <form th:if="${recommendButton} == 'notPressed'" th:object="${post}" method="post"
+                  th:action="@{/post/recommend/{id}(id=${post.id})}">
+                <button type="submit" class="btn btn-xs btn-outline">
+                    <i class="fa-regular fa-heart" th:text="| ${#lists.size(post.getRecommender)}|"></i>
+                </button>
             </form>
-            <form th:if="${recommendButton} == 'pressed'" th:object="${post}" method="post" th:action="@{/post/unrecommend/{id}(id=${post.id})}">
-            <button type="submit" class="btn btn-xs btn-neutral">
-                <i class="fa-solid fa-heart" th:text="| ${#lists.size(post.getRecommender)}|" ></i>
-            </button>
+            <form th:if="${recommendButton} == 'pressed'" th:object="${post}" method="post"
+                  th:action="@{/post/unrecommend/{id}(id=${post.id})}">
+                <button type="submit" class="btn btn-xs btn-neutral">
+                    <i class="fa-solid fa-heart" th:text="| ${#lists.size(post.getRecommender)}|"></i>
+                </button>
             </form>
         </div>
     </div>
@@ -60,9 +62,13 @@
                 <div class="ml-auto">
                     <text th:if="${comment.modifyDate}" class="ml-1">(수정됨)</text>
                 </div>
-                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username} == ${comment.member.username}" class="mt-2 flex ml-auto"> <!-- 이 부분 변경 -->
-                    <a th:href="@{|/comment/${post.id}/modify/${comment.id}}" role="button" class="btn btn-xs btn-outline">수정</a>
-                    <form method="POST" onclick="alert('삭제하시겠습니까?')" th:action="@{|/comment/${post.id}/delete/${comment.id}}" class="ml-2">
+                <div sec:authorize="isAuthenticated()"
+                     th:if="${#authentication.principal.username} == ${comment.member.username}"
+                     class="mt-2 flex ml-auto"> <!-- 이 부분 변경 -->
+                    <a th:href="@{|/comment/${post.id}/modify/${comment.id}}" role="button"
+                       class="btn btn-xs btn-outline">수정</a>
+                    <form method="POST" onclick="alert('삭제하시겠습니까?')"
+                          th:action="@{|/comment/${post.id}/delete/${comment.id}}" class="ml-2">
                         <button class="btn btn-xs btn-outline">삭제</button>
                     </form>
                 </div>
@@ -72,15 +78,20 @@
     </table>
 
     <!-- 댓글 표시 끝-->
-<!--    댓글 입력란 시작-->
-    <form method="POST" onsubmit="submitCommentForm(this); return false" th:action="@{|/comment/write/${post.id}|}" class="p-2">
-        <text>댓글 쓰기</text><textarea name="content" class="textarea textarea-bordered row-2 w-full max-w-sm mt-2"  placeholder="댓글을 입력하세요."></textarea>
-        <div class="flex justify-end mr-1 mt-2">
-            <button type="submit" class="btn btn-outline btn-sm">등록하기</button>
+    <!--    댓글 입력란 시작-->
+    <form method="POST" onsubmit="submitCommentForm(this); return false" th:action="@{|/comment/write/${post.id}|}"
+          class="p-2">
+        <div class="flex flex-col items-start">
+            <text>댓글 쓰기</text>
+            <textarea name="content" class="textarea textarea-bordered row-2 w-full max-w mt-2"
+                      placeholder="댓글을 입력하세요."></textarea>
+            <div class="flex ml-auto mt-2">
+                <button type="submit" class="btn btn-outline btn-sm">등록하기</button>
+            </div>
         </div>
     </form>
 
-<!--    댓글 입력란 끝-->
+    <!--    댓글 입력란 끝-->
     <!-- 댓글 영역 끝-->
     <script>
         function submitCommentForm(form) {

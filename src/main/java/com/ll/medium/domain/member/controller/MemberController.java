@@ -41,7 +41,7 @@ public class MemberController {
         } catch (DataIntegrityViolationException e) {
             return rq.historyBack("이미 존재하는 회원 아이디입니다.");
         }
-        return rq.redirect("/post/main", "회원가입 성공");
+        return rq.redirect("/member/login", "회원가입 성공, 로그인 후 이용해주세요.");
     }
 
     @GetMapping("/login")
