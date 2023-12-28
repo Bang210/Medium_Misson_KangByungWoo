@@ -25,7 +25,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     @Transactional
-    public void create(String title, String body, boolean published, Member member) {
+    public void create(String title, String body, boolean published, Member member, Boolean paid) {
         Post post = new Post();
         post.setTitle(title);
         post.setBody(body);
@@ -33,6 +33,7 @@ public class PostService {
         post.setPublished(published);
         post.setCreateDate(LocalDateTime.now());
         post.setHit(0L);
+        post.setPaid(paid);
         postRepository.save(post);
     }
 

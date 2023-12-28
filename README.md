@@ -7,7 +7,7 @@
    - [x] member엔티티에 paid 필드 추가
      - role_paid
  - [ ] 2단계
-   - [ ] post엔티티에 paid 필드 추가
+   - [x] post엔티티에 paid 필드 추가
      - 유료회원만 조회 가능
  - [ ] 3단계
    - NotProd에서 유료회원과 유료글 샘플데이터 100개 이상 생성

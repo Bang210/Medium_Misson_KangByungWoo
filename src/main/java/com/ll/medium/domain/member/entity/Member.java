@@ -18,5 +18,5 @@ public class Member {
 
     private String password;
 
-    private Boolean paid;
+    private boolean paid;
 }

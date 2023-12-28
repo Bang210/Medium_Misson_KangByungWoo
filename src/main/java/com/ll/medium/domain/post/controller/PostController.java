@@ -45,7 +45,7 @@ public class PostController {
 
 
         Member member = memberService.getMember(principal.getName());
-        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member);
+        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member, false);
         return rq.redirect(
 
                 "/post/main",
@@ -75,6 +75,15 @@ public class PostController {
 
     ) {
         Post post = postService.getPostById(id);
+        //유료 글 처리
+        if (post.isPaid()) {
+            if (!rq.isLoggedIn()) {
+                return rq.historyBack("로그인이 필요한 서비스입니다.");
+            } else if (!memberService.getMember(rq.getUser().getUsername()).isPaid()) {
+                return rq.historyBack("유료회원만 조회 가능한 글입니다.");
+            }
+        }
+
         List<String> recommenderNames = postService.getRecommenderNames(post);
         String recommendButton = rq.isLoggedIn() && recommenderNames.contains(rq.getUser().getUsername())? "pressed" : "notPressed";
         model.addAttribute("post", post);
