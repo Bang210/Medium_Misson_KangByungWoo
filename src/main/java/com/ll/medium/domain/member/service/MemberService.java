@@ -29,6 +29,13 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
+    public Member pay(Member member) {
+        member.setPaid(true);
+        memberRepository.save(member);
+        return member;
+    }
+
 
     public Member getMember(String username) {
         Optional<Member> opMember = memberRepository.findByUsername(username);
