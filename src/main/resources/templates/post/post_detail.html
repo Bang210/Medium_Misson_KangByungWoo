@@ -34,7 +34,7 @@
     </div>
 
     <div class="flex justify-between">
-        <button class="btn btn-neutral text-xs h-6 mt-3" onclick="history.back()">뒤로가기</button>
+        <button class="btn btn-neutral text-xs h-6 mt-3" id="toList">목록으로</button>
         <div>
             <a role="button" class="btn btn-outline mt-3 mr-5" th:href="@{|/post/modify/${post.id}|}">수정</a>
             <a role="button" class="btn btn-outline mt-3" th:href="@{|/post/confirmDelete/${post.id}|}">삭제</a>
@@ -112,6 +112,20 @@
             form.content.value = content;
             form.submit();
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 저장된 URL 가져오기
+            var storedURL = sessionStorage.getItem('currentURL');
+
+            // 저장된 URL이 있다면
+            if (storedURL) {
+                // 버튼 클릭 이벤트 핸들러 등록
+                document.getElementById('toList').addEventListener('click', function() {
+                    // 저장된 URL로 이동
+                    window.location.href = storedURL;
+                });
+            }
+        });
     </script>
 </div>
 

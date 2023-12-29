@@ -63,6 +63,11 @@
 
 <script>
 
+    function saveURL() {
+        var [currentURL, waste] = window.location.href.split("?msg=");
+        sessionStorage.setItem("currentURL", currentURL);
+    }
+
     $(window).bind("pageshow", function (event) {
         if (sessionStorage.getItem("historyBackFailMsg")) {
             toastWarning(sessionStorage.getItem("historyBackFailMsg"));

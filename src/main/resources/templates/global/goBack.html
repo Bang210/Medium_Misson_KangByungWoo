@@ -1,7 +1,6 @@
 <script th:inline="javascript">
-    const backUrl = /*[[${backUrl}]]*/ null;
+    const backUrl = /*[[${backUrl}]]*/ "/post/main";
 
-    sessionStorage.setItem("historyBackFailMsg", failMsg);
+    sessionStorage.setItem("backUrl", backUrl);
 
-    history.back();
 </script>
