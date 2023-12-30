@@ -30,7 +30,12 @@ public class PostController {
     //글쓰기 페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
-    public String showWrite() {
+    public String showWrite(
+            Model model,
+            Principal principal
+    ) {
+        Member member = memberService.getMember(principal.getName());
+        model.addAttribute("member", member);
         return "/post/write_form";
     }
 
@@ -45,11 +50,11 @@ public class PostController {
 
 
         Member member = memberService.getMember(principal.getName());
-        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member, false);
+        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member, writeForm.isPaid());
         return rq.redirect(
 
                 "/post/main",
-                "글이 %s로 등록되었습니다.".formatted(writeForm.isPublished()? "공개" : "비공개")
+                "%s 글이 %s로 등록되었습니다.".formatted(writeForm.isPaid()? "유료" : "무료", writeForm.isPublished()? "공개" : "비공개")
         );
     }
 

@@ -16,4 +16,6 @@ public class WriteForm {
     private String body;
     
     private boolean published;
+
+    private boolean paid;
 }
