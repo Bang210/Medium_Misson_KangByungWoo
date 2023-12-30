@@ -50,6 +50,9 @@ public class PostController {
 
 
         Member member = memberService.getMember(principal.getName());
+        if (writeForm.isPaid() && !member.isPaid()) {
+            rq.historyBack("유료 글은 유료 회원만 등록 가능합니다.");
+        }
         postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member, writeForm.isPaid());
         return rq.redirect(
 
