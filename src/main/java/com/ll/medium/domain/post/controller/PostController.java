@@ -204,7 +204,7 @@ public class PostController {
         Page<Post> paging = postService.getPageMyPost(page, memberService.getMember(principal.getName()).getId());
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
-        return "post/myPost_form";
+        return "post/mjavayPost_form";
     }
 
     //사용자별 글 보기
