@@ -106,6 +106,13 @@ public class PostController {
             @PathVariable("id") Long id
     ) {
         Post post = postService.getPostById(id);
+        if (post.isPaid()) {
+            if (!rq.isLoggedIn()) {
+                return rq.historyBack("로그인이 필요한 서비스입니다.");
+            } else if (!memberService.getMember(rq.getUser().getUsername()).isPaid()) {
+                return rq.historyBack("유료회원만 조회 가능한 글입니다.");
+            }
+        }
         postService.increaseHit(post);
         return "redirect:/post/detail/{id}";
     }
