@@ -36,7 +36,7 @@ public class PostController {
     ) {
         Member member = memberService.getMember(principal.getName());
         model.addAttribute("member", member);
-        return "/post/write_form";
+        return "post/write_form";
     }
 
     //글쓰기 처리
@@ -71,7 +71,7 @@ public class PostController {
         Page<Post> paging = postService.pagePublished(page);
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
-        return "/post/post_list";
+        return "post/post_list";
     }
 
     //글 상세 페이지
@@ -96,7 +96,7 @@ public class PostController {
         String recommendButton = rq.isLoggedIn() && recommenderNames.contains(rq.getUser().getUsername())? "pressed" : "notPressed";
         model.addAttribute("post", post);
         model.addAttribute("recommendButton", recommendButton);
-        return "/post/post_detail";
+        return "post/post_detail";
     }
 
     //조회수 증가
@@ -204,7 +204,7 @@ public class PostController {
         Page<Post> paging = postService.getPageMyPost(page, memberService.getMember(principal.getName()).getId());
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
-        return "post/mjavayPost_form";
+        return "post/myPost_form";
     }
 
     //사용자별 글 보기

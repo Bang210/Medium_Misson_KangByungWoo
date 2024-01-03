@@ -62,7 +62,7 @@ public class MemberController {
         List<Member> memberList = memberService.searchByUsername(keyword);
         model.addAttribute(memberList);
         model.addAttribute(keyword);
-        return "/member/find_form";
+        return "member/find_form";
     }
 
 }
