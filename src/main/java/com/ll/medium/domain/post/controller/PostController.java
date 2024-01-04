@@ -201,9 +201,11 @@ public class PostController {
             Model model,
             @RequestParam(value="page", defaultValue = "0") int page
     ) {
-        Page<Post> paging = postService.getPageMyPost(page, memberService.getMember(principal.getName()).getId());
+        Member member = memberService.getMember(principal.getName());
+        Page<Post> paging = postService.getPageMyPost(page, member.getId());
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
+        model.addAttribute("member", member);
         return "post/myPost_form";
     }
 
