@@ -6,9 +6,15 @@
     <div class="divider"></div>
     <h1 class="font-bold" th:text="|${member.username}님|"></h1>
     <div class="flex">
-        <div>멤버쉽-  </div>
+        <div>멤버쉽-</div>
         <div th:text="${member.isPaid}? ' 유료 멤버쉽 적용중' : ' 적용중인 멤버쉽이 없습니다.'"></div>
     </div>
+    <form method="POST" th:if="${!member.isPaid}" th:action="@{|/member/pay/${member.id}|}">
+        <button type="submit" class="btn btn-outline">멤버쉽 가입하기</button>
+    </form>
+    <form method="POST" th:if="${member.isPaid}" th:action="@{|/member/unpay/${member.id}|}">
+        <button type="submit" class="btn btn-outline">멤버쉽 해지하기</button>
+    </form>
     <div class="divider"></div>
     <h1 class="font-bold mt-3">내가 쓴 글</h1>
 

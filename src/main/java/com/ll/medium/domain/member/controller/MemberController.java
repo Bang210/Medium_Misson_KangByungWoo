@@ -12,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -65,4 +66,27 @@ public class MemberController {
         return "member/find_form";
     }
 
+    @PostMapping("/pay/{id}")
+    public String memberPay(
+        @PathVariable("id") Long id
+    ) {
+        Member member = memberService.getMemberById(id);
+        if (member.isPaid()) {
+            return rq.redirectByFailure("/post/mypost","이미 멤버쉽 적용중인 회원입니다.");
+        }
+        memberService.pay(member);
+        return rq.redirect("/post/mypost", "유료 멤버쉽이 적용되었습니다.");
+    }
+
+    @PostMapping("/unpay/{id}")
+    public String memberUnpay(
+            @PathVariable("id") Long id
+    ) {
+        Member member = memberService.getMemberById(id);
+        if (!member.isPaid()) {
+            return rq.redirectByFailure("/post/mypost","적용중인 멤버쉽이 없습니다.");
+        }
+        memberService.unpay(member);
+        return rq.redirect("/post/mypost", "유료 멤버쉽이 해지되었습니다.");
+    }
 }

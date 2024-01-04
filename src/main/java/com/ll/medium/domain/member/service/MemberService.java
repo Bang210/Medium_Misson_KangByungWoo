@@ -49,4 +49,20 @@ public class MemberService {
     public List<Member> searchByUsername(String keyword) {
         return memberRepository.findByUsernameContaining(keyword);
     }
+
+    public Member getMemberById(Long id) {
+        Optional<Member> opMember = memberRepository.findById(id);
+        if (opMember.isPresent()) {
+            return opMember.get();
+        } else {
+            throw new DataNotFoundException("member not found");
+        }
+    }
+
+    @Transactional
+    public Member unpay(Member member) {
+        member.setPaid(false);
+        memberRepository.save(member);
+        return member;
+    }
 }
