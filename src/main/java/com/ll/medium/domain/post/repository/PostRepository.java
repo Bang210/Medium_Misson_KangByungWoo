@@ -14,4 +14,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByPublishedTrueOrderByRecommenderDesc();
     Page<Post> findByAuthorId(Pageable pageable, Long UserId);
     Page<Post> findByPublishedTrueAndAuthorIdOrderByCreateDateDesc(Pageable pageable, Long authorId);
+
+    List<Post> findByPublishedTrueAndTitleContainingOrderByCreateDateDesc(String keyword);
+    List<Post> findByPublishedTrueAndTitleContainingOrderByRecommenderDesc(String keyword);
+
+    List<Post> findByPublishedTrueAndTitleContainingOrderByCreateDateAsc(String keyword);
+
+    List<Post> findByPublishedTrueAndTitleContainingOrderByRecommenderAsc(String keyword);
+
+    List<Post> findByPublishedTrueAndTitleContainingOrderByHitDesc(String keyword);
+
+    List<Post> findByPublishedTrueAndTitleContainingOrderByHitAsc(String keyword);
 }

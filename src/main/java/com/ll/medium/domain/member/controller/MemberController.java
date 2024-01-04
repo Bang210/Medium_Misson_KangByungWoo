@@ -5,6 +5,8 @@ import com.ll.medium.domain.member.entity.Member;
 import com.ll.medium.domain.member.form.FindMemberForm;
 import com.ll.medium.domain.member.form.JoinForm;
 import com.ll.medium.domain.member.service.MemberService;
+import com.ll.medium.domain.post.entity.Post;
+import com.ll.medium.domain.post.service.PostService;
 import com.ll.medium.global.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PostService postService;
     private final Rq rq;
 
     @GetMapping("/join")
@@ -61,8 +64,10 @@ public class MemberController {
     ) {
         String keyword = findMemberForm.getKeyword();
         List<Member> memberList = memberService.searchByUsername(keyword);
-        model.addAttribute(memberList);
-        model.addAttribute(keyword);
+        List<Post> searchedPostList = postService.search(findMemberForm.getKey(), findMemberForm.getCriteria(), keyword);
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("searchedPostList", searchedPostList);
         return "member/find_form";
     }
 

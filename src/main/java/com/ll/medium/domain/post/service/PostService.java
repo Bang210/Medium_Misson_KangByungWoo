@@ -130,4 +130,14 @@ public class PostService {
         num = Math.min(num, recommendedList.size());
         return recommendedList.stream().limit(num).toList();
     }
+
+    public List<Post> search(String key, String criteria, String keyword) {
+        if (key.equals("latest")) {
+            return criteria.equals("normal")? postRepository.findByPublishedTrueAndTitleContainingOrderByCreateDateDesc(keyword) : postRepository.findByPublishedTrueAndTitleContainingOrderByCreateDateAsc(keyword);
+        } else if (key.equals("recommended")) {
+            return criteria.equals("normal")? postRepository.findByPublishedTrueAndTitleContainingOrderByRecommenderDesc(keyword) : postRepository.findByPublishedTrueAndTitleContainingOrderByRecommenderAsc(keyword);
+        } else {
+            return criteria.equals("normal")? postRepository.findByPublishedTrueAndTitleContainingOrderByHitDesc(keyword) : postRepository.findByPublishedTrueAndTitleContainingOrderByHitAsc(keyword);
+        }
+    }
 }
