@@ -83,12 +83,11 @@ public class PostController {
 
     ) {
         Post post = postService.getPostById(id);
-        Member member = memberService.getMember(rq.getUser().getUsername());
         //유료 글 처리
         if (post.isPaid()) {
             if (!rq.isLoggedIn()) {
                 return rq.historyBack("로그인이 필요한 서비스입니다.");
-            } else if (!member.isPaid() && member != post.getAuthor()) {
+            } else if (!memberService.getMember(rq.getUser().getUsername()).isPaid() && memberService.getMember(rq.getUser().getUsername()) != post.getAuthor()) {
                 return rq.historyBack("유료회원만 조회 가능한 글입니다.");
             }
         }
@@ -107,11 +106,10 @@ public class PostController {
             @PathVariable("id") Long id
     ) {
         Post post = postService.getPostById(id);
-        Member member = memberService.getMember(rq.getUser().getUsername());
         if (post.isPaid()) {
             if (!rq.isLoggedIn()) {
                 return rq.historyBack("로그인이 필요한 서비스입니다.");
-            } else if (!member.isPaid() && member != post.getAuthor()) {
+            } else if (!memberService.getMember(rq.getUser().getUsername()).isPaid() && memberService.getMember(rq.getUser().getUsername()) != post.getAuthor()) {
                 return rq.historyBack("유료회원만 조회 가능한 글입니다.");
             }
         }
