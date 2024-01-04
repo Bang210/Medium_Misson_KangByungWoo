@@ -19,7 +19,7 @@
                 <td class="text-[0.6rem]"
                     th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
                 <td class="flex">
-                    <form th:object="${post}" method="POST" th:action="@{/post/detail/{id}/increaseHit(id=${post.id})}">
+                    <form th:object="${post}" method="POST" th:action="@{post/detail/{id}/increaseHit(id=${post.id})}">
                         <button class="text-left" type="submit" th:text="${post.title}"></button>
                         <i th:if="${post.recommender.size() > 0}" th:text="| ${post.recommender.size()}|"
                            class="fa-solid fa-heart fa-2xs"></i>
