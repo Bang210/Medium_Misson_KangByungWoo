@@ -23,6 +23,6 @@ logging:
 custom:
   tempDirPath: /gen/temp
   site:
-    baseUrl:
+    baseUrl: https://medium.ll.js-kdd.site
   genFile:
     dirPath: /gen
