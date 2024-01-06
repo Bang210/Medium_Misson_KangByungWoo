@@ -85,7 +85,7 @@ public class CommentController {
         model.addAttribute("post", post);
         model.addAttribute("comment", comment);
 
-        return "/comment/modify_form";
+        return "comment/modify_form";
     }
 
     @PostMapping("{postId}/modify/{commentId}")

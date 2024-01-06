@@ -28,7 +28,7 @@
             </tbody>
         </table>
         <h1 class="font-bold mt-5">추천 글</h1>
-        <table class="table">
+        <table class="table mb-2">
             <!-- head -->
             <thead>
             <tr>
@@ -55,5 +55,11 @@
         <h1 class="p-5 mb-40" th:if="${#lists.isEmpty(recommendedList)}">아직 글이 없습니다.</h1>
         <a role="button" class="btn btn-outline" th:href="@{/post/list}">전체 글 보기</a>
     </span>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 페이지가 로드되면 실행할 함수 호출
+            saveURL();
+        });
+    </script>
 </div>
 </html>

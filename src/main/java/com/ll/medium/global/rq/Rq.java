@@ -3,15 +3,16 @@ package com.ll.medium.global.rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Optional;
 
 @RequestScope
@@ -23,7 +24,7 @@ public class Rq {
     private final HttpServletResponse response;
 
     public String redirect(String path, String msg) {
-        return "redirect:" + path + "?msg=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
+        return "redirect:" + path + "?msg=" + URLEncoder.encode(msg, StandardCharsets.UTF_8) + ";ttl=" + (new Date().getTime() + 1000 * 5);
     }
 
 

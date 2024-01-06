@@ -30,8 +30,13 @@ public class PostController {
     //글쓰기 페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
-    public String showWrite() {
-        return "/post/write_form";
+    public String showWrite(
+            Model model,
+            Principal principal
+    ) {
+        Member member = memberService.getMember(principal.getName());
+        model.addAttribute("member", member);
+        return "post/write_form";
     }
 
     //글쓰기 처리
@@ -45,11 +50,14 @@ public class PostController {
 
 
         Member member = memberService.getMember(principal.getName());
-        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member);
+        if (writeForm.isPaid() && !member.isPaid()) {
+            rq.historyBack("유료 글은 유료 회원만 등록 가능합니다.");
+        }
+        postService.create(writeForm.getTitle(), writeForm.getBody(), writeForm.isPublished(), member, writeForm.isPaid());
         return rq.redirect(
 
                 "/post/main",
-                "글이 %s로 등록되었습니다.".formatted(writeForm.isPublished()? "공개" : "비공개")
+                "%s 글이 %s로 등록되었습니다.".formatted(writeForm.isPaid()? "유료" : "무료", writeForm.isPublished()? "공개" : "비공개")
         );
     }
 
@@ -63,7 +71,7 @@ public class PostController {
         Page<Post> paging = postService.pagePublished(page);
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
-        return "/post/post_list";
+        return "post/post_list";
     }
 
     //글 상세 페이지
@@ -75,11 +83,20 @@ public class PostController {
 
     ) {
         Post post = postService.getPostById(id);
+        //유료 글 처리
+        if (post.isPaid()) {
+            if (!rq.isLoggedIn()) {
+                return rq.historyBack("로그인이 필요한 서비스입니다.");
+            } else if (!memberService.getMember(rq.getUser().getUsername()).isPaid() && memberService.getMember(rq.getUser().getUsername()) != post.getAuthor()) {
+                return rq.historyBack("유료회원만 조회 가능한 글입니다.");
+            }
+        }
+
         List<String> recommenderNames = postService.getRecommenderNames(post);
         String recommendButton = rq.isLoggedIn() && recommenderNames.contains(rq.getUser().getUsername())? "pressed" : "notPressed";
         model.addAttribute("post", post);
         model.addAttribute("recommendButton", recommendButton);
-        return "/post/post_detail";
+        return "post/post_detail";
     }
 
     //조회수 증가
@@ -89,6 +106,13 @@ public class PostController {
             @PathVariable("id") Long id
     ) {
         Post post = postService.getPostById(id);
+        if (post.isPaid()) {
+            if (!rq.isLoggedIn()) {
+                return rq.historyBack("로그인이 필요한 서비스입니다.");
+            } else if (!memberService.getMember(rq.getUser().getUsername()).isPaid() && memberService.getMember(rq.getUser().getUsername()) != post.getAuthor()) {
+                return rq.historyBack("유료회원만 조회 가능한 글입니다.");
+            }
+        }
         postService.increaseHit(post);
         return "redirect:/post/detail/{id}";
     }
@@ -177,9 +201,11 @@ public class PostController {
             Model model,
             @RequestParam(value="page", defaultValue = "0") int page
     ) {
-        Page<Post> paging = postService.getPageMyPost(page, memberService.getMember(principal.getName()).getId());
+        Member member = memberService.getMember(principal.getName());
+        Page<Post> paging = postService.getPageMyPost(page, member.getId());
         model.addAttribute("page", page);
         model.addAttribute("paging", paging);
+        model.addAttribute("member", member);
         return "post/myPost_form";
     }
 

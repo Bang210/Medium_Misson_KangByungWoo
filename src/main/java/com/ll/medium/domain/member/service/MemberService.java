@@ -24,6 +24,14 @@ public class MemberService {
         Member member = new Member();
         member.setUsername(username);
         member.setPassword(passwordEncoder.encode(password));
+        member.setPaid(false);
+        memberRepository.save(member);
+        return member;
+    }
+
+    @Transactional
+    public Member pay(Member member) {
+        member.setPaid(true);
         memberRepository.save(member);
         return member;
     }
@@ -40,5 +48,21 @@ public class MemberService {
 
     public List<Member> searchByUsername(String keyword) {
         return memberRepository.findByUsernameContaining(keyword);
+    }
+
+    public Member getMemberById(Long id) {
+        Optional<Member> opMember = memberRepository.findById(id);
+        if (opMember.isPresent()) {
+            return opMember.get();
+        } else {
+            throw new DataNotFoundException("member not found");
+        }
+    }
+
+    @Transactional
+    public Member unpay(Member member) {
+        member.setPaid(false);
+        memberRepository.save(member);
+        return member;
     }
 }

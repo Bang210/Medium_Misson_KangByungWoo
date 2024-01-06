@@ -2,8 +2,8 @@
 
 <div layout:fragment="content" class="p-2">
 
-    <h1 class="text-center font-bold mt-2">회원 찾기</h1>
-    <h1 th:text="|@{keyword} 검색결과|"></h1>
+    <h1 class="font-bold text-center mt-2" th:text="|&quot${keyword}&quot 검색결과|"></h1>
+    <h1 class="font-bold mt-2">회원명으로 검색한 결과</h1>
     <table class="table">
         <thead>
         <th></th>
@@ -17,6 +17,25 @@
         </tbody>
     </table>
     <h1 class="p-5 mb-40" th:if="${#lists.isEmpty(memberList)}">검색결과가 없습니다.</h1>
+    <h1 class="font-bold mt-2">게시물로 검색한 결과</h1>
+    <table class="table">
+        <thead>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr th:each="post, loop : ${searchedPostList}">
+            <td class="flex">
+                <form th:object="${post}" method="POST" th:action="@{/post/detail/{id}/increaseHit(id=${post.id})}">
+                    <button class="text-left" type="submit" th:text="${post.title}"></button>
+                    <i th:if="${post.recommender.size() > 0}" th:text="| ${post.recommender.size()}|"
+                       class="fa-solid fa-heart fa-2xs"></i>
+                    <i th:if="${post.commentList.size() > 0}" th:text="| ${post.commentList.size()}|"
+                       class="fa-solid fa-comment fa-2xs"></i>
+                </form>
+        </tr>
+        </tbody>
+    </table>
+    <h1 class="p-5 mb-40" th:if="${#lists.isEmpty(searchedPostList)}">검색결과가 없습니다.</h1>
     <div>
         <button class="btn btn-neutral text-xs h-6 mt-3" onclick="history.back()">뒤로가기</button>
     </div>

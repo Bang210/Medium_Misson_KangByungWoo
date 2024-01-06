@@ -8,4 +8,8 @@ public class FindMemberForm {
 
     @NotBlank
     private String keyword;
+
+    private String key;
+
+    private String criteria;
 }

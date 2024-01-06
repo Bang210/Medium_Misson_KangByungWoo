@@ -36,7 +36,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 bg-neutral text-neutral-content">
                 <li class="nav-link"><i class="fa-solid fa-house"><a th:href="@{/}">홈</a></i></li>
                 <li class="nav-link"><i class="fa-solid fa-list"><a th:href="@{/post/list}">전체 글</a></i></li>
-                <li class="nav-link" sec:authorize="isAuthenticated()"><i class="fa-solid fa-user"><a th:href="@{/post/mypost}">내가 쓴 글</a></i></li>
+                <li class="nav-link" sec:authorize="isAuthenticated()"><i class="fa-solid fa-user"><a th:href="@{/post/mypost}">내 정보</a></i></li>
                 <li class="nav-link" sec:authorize="isAuthenticated()"><i class="fa-solid fa-pen"><a th:href="@{/post/write}">글 쓰기</a></i></li>
                 <li class="nav-link" sec:authorize="isAnonymous()"><i class="fa-solid fa-arrow-right-to-bracket"><a th:href="@{/member/login}">로그인</a></i></li>
                 <li class="nav-link" sec:authorize="isAnonymous()"><i class="fa-solid fa-user-plus"><a th:href="@{/member/join}">회원가입</a></i></li>
@@ -62,6 +62,11 @@
 
 
 <script>
+
+    function saveURL() {
+        var [currentURL, waste] = window.location.href.split("?msg=");
+        sessionStorage.setItem("currentURL", currentURL);
+    }
 
     $(window).bind("pageshow", function (event) {
         if (sessionStorage.getItem("historyBackFailMsg")) {

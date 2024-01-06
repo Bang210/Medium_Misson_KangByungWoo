@@ -2,7 +2,23 @@
 
 <div layout:fragment="content" class="p-2">
 
-    <h1 class="text-center font-bold mt-3">내가 쓴 글</h1>
+    <h1 class="text-center font-bold mt-3">내 정보</h1>
+    <div class="divider"></div>
+    <h1 class="font-bold" th:text="|${member.username}님|"></h1>
+    <div class="flex mt-4">
+        <div>멤버쉽-</div>
+        <div th:text="${member.isPaid}? ' 유료 멤버쉽 적용중' : ' 적용중인 멤버쉽이 없습니다.'"></div>
+    </div>
+    <form class="mt-2" method="POST" th:if="${!member.isPaid}" th:action="@{|/member/pay/${member.id}|}">
+        <button type="submit" class="btn btn-outline">멤버쉽 가입하기</button>
+    </form>
+    <form class="mt-2" method="POST" th:if="${member.isPaid}" th:action="@{|/member/unpay/${member.id}|}">
+        <button type="submit" class="btn btn-outline">멤버쉽 해지하기</button>
+    </form>
+    <div class="divider"></div>
+    <h1 class="font-bold mt-3">내가 쓴 글</h1>
+
+
     <!--포스트 테이블 시작-->
     <div class="overflow-x-auto">
         <table th:if="${#lists.isEmpty(paging.content) == false}" class="table">
@@ -25,7 +41,7 @@
             </tbody>
         </table>
         <h1 class="p-5 mb-40" th:if="${#lists.isEmpty(paging.content)}">아직 작성한 글이 없습니다.</h1>
-        <div class="ml-2">
+        <div class="ml-2 mt-2">
             <a role="button" class="btn btn-outline" th:href="@{/post/write}">글 쓰기</a>
         </div>
         <!--포스트 테이블 끝-->
@@ -36,6 +52,11 @@
 
     </div>
 
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 페이지가 로드되면 실행할 함수 호출
+            saveURL();
+        });
+    </script>
 </div>
 </html>

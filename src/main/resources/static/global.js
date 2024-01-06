@@ -16,12 +16,24 @@ toastr.options = {
     hideMethod: "fadeOut"
 };
 
+function parseMsg(msg) {
+    return msg.split(";ttl=");
+}
+
 function toastWarning(msg){
-    toastr["warning"](msg, "");
+    const [_msg, ttl] = parseMsg(msg);
+
+    if (ttl && parseInt(ttl) < new Date().getTime()) return;
+
+    toastr["warning"](_msg, "");
 }
 
 function toastNotice(msg){
-    toastr["success"](msg, "");
+    const [_msg, ttl] = parseMsg(msg);
+
+    if (ttl && parseInt(ttl) < new Date().getTime()) return;
+
+    toastr["success"](_msg, "");
 }
 
 function getQueryParams() {

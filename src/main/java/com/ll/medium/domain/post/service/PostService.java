@@ -25,7 +25,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     @Transactional
-    public void create(String title, String body, boolean published, Member member) {
+    public void create(String title, String body, boolean published, Member member, Boolean paid) {
         Post post = new Post();
         post.setTitle(title);
         post.setBody(body);
@@ -33,6 +33,7 @@ public class PostService {
         post.setPublished(published);
         post.setCreateDate(LocalDateTime.now());
         post.setHit(0L);
+        post.setPaid(paid);
         postRepository.save(post);
     }
 
@@ -128,5 +129,15 @@ public class PostService {
         List<Post> recommendedList = postRepository.findByPublishedTrueOrderByRecommenderDesc();
         num = Math.min(num, recommendedList.size());
         return recommendedList.stream().limit(num).toList();
+    }
+
+    public List<Post> search(String key, String criteria, String keyword) {
+        if (key.equals("latest")) {
+            return criteria.equals("normal")? postRepository.findByPublishedTrueAndTitleContainingOrderByCreateDateDesc(keyword) : postRepository.findByPublishedTrueAndTitleContainingOrderByCreateDateAsc(keyword);
+        } else if (key.equals("recommended")) {
+            return criteria.equals("normal")? postRepository.findByPublishedTrueAndTitleContainingOrderByRecommenderDesc(keyword) : postRepository.findByPublishedTrueAndTitleContainingOrderByRecommenderAsc(keyword);
+        } else {
+            return criteria.equals("normal")? postRepository.findByPublishedTrueAndTitleContainingOrderByHitDesc(keyword) : postRepository.findByPublishedTrueAndTitleContainingOrderByHitAsc(keyword);
+        }
     }
 }

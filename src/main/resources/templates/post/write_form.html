@@ -21,6 +21,13 @@
             </label>
         </div>
 
+        <div th:if="${member.isPaid}" class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">유료 글로 등록</span>
+                <input type="checkbox" name="paid" checked="checked" class="checkbox" />
+            </label>
+        </div>
+
 
         <button type="submit" class="btn btn-outline btn-block mt-5">
             등록
@@ -50,6 +57,12 @@
                 form.published.value = true;
             } else {
                 form.published.value = false;
+            }
+
+            if (form.paid.checked) {
+                form.paid.value = true;
+            } else {
+                form.paid.value = false;
             }
 
             if (title.length == 0) {
